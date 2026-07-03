@@ -168,9 +168,27 @@ select:focus,input:focus,textarea:focus{outline:2px solid var(--navy-2);outline-
 .modal .close{margin-top:16px;background:none;border:none;font-size:12px;color:#7a828f;cursor:pointer;text-decoration:underline;font-family:inherit}
 footer{text-align:center;font-size:12px;color:#8a909b;padding:26px 20px}
 @media(max-width:640px){.frow{grid-template-columns:1fr}.flabel{padding:10px 16px}}
+#gate{position:fixed;inset:0;background:#0e1d38;color:#fff;display:flex;align-items:center;justify-content:center;z-index:999;padding:20px}
+#gate .box{background:#fff;color:var(--ink);border-radius:12px;padding:32px;max-width:340px;width:100%;text-align:center}
+#gate h2{font-size:16px;font-weight:900;margin-bottom:14px;color:var(--navy)}
+#gate input{width:100%;font-size:15px;padding:11px 12px;border:1px solid var(--line);border-radius:6px;margin-bottom:12px;font-family:inherit}
+#gate button{width:100%;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:11px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+#gate .err{font-size:12px;color:var(--accent-dark);min-height:16px;margin-top:8px}
+#siteContent{display:none}
 </style>
 </head>
 <body>
+
+<div id="gate">
+  <div class="box">
+    <h2>このページは限定公開です</h2>
+    <input type="password" id="gatePw" placeholder="パスワードを入力">
+    <button onclick="checkGate()">表示する</button>
+    <div class="err" id="gateErr"></div>
+  </div>
+</div>
+
+<div id="siteContent">
 
 <header>
   <div class="logo">営業<span>ハック</span></div>
@@ -466,7 +484,26 @@ footer{text-align:center;font-size:12px;color:#8a909b;padding:26px 20px}
 
 <footer>© 株式会社営業ハック</footer>
 
+</div>
+
 <script>
+const GATE_PW = "testtest";
+function unlock(){
+  document.getElementById('gate').style.display='none';
+  document.getElementById('siteContent').style.display='block';
+}
+function checkGate(){
+  const v=document.getElementById('gatePw').value;
+  if(v===GATE_PW){
+    sessionStorage.setItem('eigyohack_unlocked','1');
+    unlock();
+  }else{
+    document.getElementById('gateErr').textContent='パスワードが違います';
+  }
+}
+document.getElementById('gatePw').addEventListener('keydown',e=>{ if(e.key==='Enter') checkGate(); });
+if(sessionStorage.getItem('eigyohack_unlocked')==='1') unlock();
+
 const BASE = 12000;
 const state = { chips: 0 };
 function getPill(id){ const el=document.querySelector('#'+id+' .pill.on'); return el?el.dataset.v:null; }

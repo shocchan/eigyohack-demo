@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>テレアポ相性診断＆料金シミュレーション｜営業ハック</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#122442; --navy-2:#1d3a66; --ink:#2a2d33; --paper:#f7f8fa;
+  --line:#dde3ec; --accent:#e8632c; --accent-dark:#c74e1c;
+  --teal:#0f7d6c; --teal-bg:#e7f4f1; --amber-bg:#fdf1e8; --radius:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Zen Kaku Gothic New',sans-serif;color:var(--ink);background:var(--paper);line-height:1.7}
+.mono{font-family:'IBM Plex Mono',monospace}
+header{background:#0e1d38;color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-weight:900;font-size:19px}.logo span{color:var(--accent)}
+.hnav{font-size:12px;color:#c3d0e4}
+.hero{background:linear-gradient(135deg,#0e1d38 0%,#1d3a66 70%,#25497e 100%);color:#fff;padding:52px 20px 66px;text-align:center;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-80px;top:-80px;width:340px;height:340px;border-radius:50%;background:rgba(232,99,44,.12)}
+.hero::before{content:"";position:absolute;left:-60px;bottom:-120px;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,.05)}
+.hero>*{position:relative;z-index:1}
+.hero .eyebrow{font-size:12px;letter-spacing:.22em;color:#9db4d8;margin-bottom:14px}
+.hero h1{font-size:clamp(23px,5vw,37px);font-weight:900;line-height:1.45}
+.hero h1 em{font-style:normal;color:#ffb38a;border-bottom:4px solid var(--accent);padding-bottom:2px}
+.hero p{margin-top:16px;font-size:14px;color:#c3d0e4;max-width:640px;margin-left:auto;margin-right:auto}
+.hero .badges{display:flex;gap:10px;justify-content:center;margin-top:24px;flex-wrap:wrap}
+.hero .badge{font-size:12px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.06);padding:6px 16px;border-radius:20px;font-weight:700}
+main{max-width:980px;margin:-30px auto 0;padding:0 16px 80px}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-bottom:24px;box-shadow:0 1px 3px rgba(18,36,66,.05),0 4px 14px rgba(18,36,66,.04)}
+
+/* trust */
+.trust-inner{display:flex;gap:22px;padding:26px 24px;align-items:flex-start;flex-wrap:wrap}
+.trust-photo{width:84px;height:84px;border-radius:50%;background:linear-gradient(135deg,var(--navy),#2a5290);color:#fff;font-size:34px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:3px solid #fff;box-shadow:0 2px 10px rgba(18,36,66,.2)}
+.trust-body{flex:1;min-width:260px}
+.trust-eyebrow{font-size:11px;letter-spacing:.18em;color:var(--accent-dark);font-weight:900;margin-bottom:6px}
+.trust-body h2{font-size:19px;font-weight:900;line-height:1.5;margin-bottom:10px;color:var(--navy)}
+.trust-body>p{font-size:13.5px;color:#4a5261;line-height:1.9}
+.trust-stats{display:flex;gap:0;margin-top:18px;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.ts{flex:1;text-align:center;padding:14px 8px;border-right:1px solid var(--line);background:#fafbfd}
+.ts:last-child{border-right:none}
+.ts b{display:block;font-size:22px;font-weight:900;color:var(--navy-2);font-family:'IBM Plex Mono',monospace}
+.ts span{font-size:11px;color:#7a828f;font-weight:700}
+.card-head{border-bottom:1px solid var(--line);padding:16px 22px;display:flex;align-items:center;gap:10px}
+.card-head .bar{width:4px;height:20px;background:var(--accent);border-radius:2px}
+.card-head h2{font-size:16px;font-weight:700}
+.card-head .sub{font-size:12px;color:#7a828f;margin-left:auto}
+
+/* form */
+.frow{display:grid;grid-template-columns:210px 1fr;border-bottom:1px solid var(--line)}
+.frow:last-child{border-bottom:none}
+.flabel{background:#eef2f8;padding:16px 18px;font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:8px}
+.req{font-size:10px;background:var(--accent);color:#fff;padding:2px 8px;border-radius:3px;font-weight:700;flex-shrink:0}
+.fctrl{padding:14px 18px;display:flex;align-items:center;flex-wrap:wrap;gap:10px}
+select,input[type=number],input[type=text],textarea{font-family:inherit;font-size:15px;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:#fff;min-width:220px}
+textarea{width:100%;min-height:64px}
+select:focus,input:focus,textarea:focus{outline:2px solid var(--navy-2);outline-offset:1px}
+.pillgroup{display:flex;gap:8px;flex-wrap:wrap}
+.pill{border:1.5px solid var(--line);background:#fff;border-radius:24px;padding:8px 18px;font-size:13.5px;cursor:pointer;font-family:inherit;transition:all .15s}
+.pill.on{border-color:var(--navy-2);background:var(--navy-2);color:#fff;font-weight:700}
+.hint{font-size:12px;color:#7a828f;width:100%}
+.counter{font-size:12px;font-weight:700;color:var(--navy-2)}
+
+/* hearing chips */
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1.5px dashed var(--line);background:#fff;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;font-family:inherit;color:#5a6577;transition:all .15s}
+.chip.on{border-style:solid;border-color:var(--accent);background:var(--amber-bg);color:var(--accent-dark);font-weight:700}
+.chip.off{opacity:.4;cursor:not-allowed}
+
+/* range summary */
+.range{padding:24px 22px;border-bottom:1px solid var(--line)}
+.range-label{font-size:13px;font-weight:900;color:var(--navy-2);margin-bottom:12px}
+.range-vals{display:flex;align-items:stretch;gap:14px;flex-wrap:wrap}
+.rv{flex:1;min-width:180px;border:1.5px solid var(--line);border-radius:10px;padding:14px 16px;text-align:center}
+.rv .l{font-size:12px;color:#7a828f;font-weight:700}
+.rv .v{font-family:'IBM Plex Mono',monospace;font-size:30px;font-weight:900;color:var(--navy)}
+.rv .s{font-size:11px;color:#8a909b}
+.rv.max{border-color:var(--accent);background:var(--amber-bg)}
+.rv.max .v{color:var(--accent-dark)}
+.range-tilde{display:flex;align-items:center;font-size:22px;font-weight:900;color:#b7bec9}
+.range-break{font-size:12px;color:#5a6577;margin-top:12px;line-height:1.9}
+.range-break b{color:var(--navy-2)}
+.detail-box{border-bottom:1px solid var(--line)}
+.detail-box summary{padding:14px 22px;font-size:13px;font-weight:700;color:var(--navy-2);cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px}
+.detail-box summary::before{content:"▸";transition:transform .15s}
+.detail-box[open] summary::before{transform:rotate(90deg)}
+.detail-box summary::-webkit-details-marker{display:none}
+
+/* result */
+.diag{display:flex;gap:16px;padding:20px 22px;border-bottom:1px solid var(--line);align-items:center;flex-wrap:wrap}
+.diag-mark{width:74px;height:74px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:900;flex-shrink:0}
+.diag-mark.good{background:var(--teal-bg);color:var(--teal)}
+.diag-mark.mid{background:var(--amber-bg);color:var(--accent-dark)}
+.diag-mark.low{background:#f4f5f8;color:#6a7180}
+.diag-body{flex:1;min-width:220px}
+.diag-body h3{font-size:16px;font-weight:900}
+.diag-body p{font-size:13px;color:#5a6577}
+.result-table{width:100%;border-collapse:collapse}
+.result-table td{padding:14px 22px;border-bottom:1px solid var(--line);font-size:14px}
+.result-table td:last-child{text-align:right;font-weight:700}
+.result-table td .sub{display:block;font-size:11px;color:#8a909b;font-weight:400}
+.result-table tr.total td{background:var(--amber-bg);font-size:15px}
+.result-table tr.total td:last-child{color:var(--accent-dark);font-size:22px;font-weight:900}
+.result-table tr.first td{background:#eef4ff}
+.result-table tr.first td:last-child{color:var(--navy-2);font-size:20px;font-weight:900}
+.unit{font-size:13px;color:#7a828f;font-weight:400;margin-left:2px}
+.notice{font-size:12px;color:#8a4a20;background:var(--amber-bg);padding:12px 22px;line-height:1.8}
+.cta-area{text-align:center;padding:26px 22px 30px}
+.cta{display:inline-block;background:var(--accent);color:#fff;font-size:17px;font-weight:900;padding:16px 52px;border-radius:8px;border:none;cursor:pointer;font-family:inherit;box-shadow:0 3px 0 var(--accent-dark);transition:transform .1s}
+.cta:active{transform:translateY(2px);box-shadow:none}
+.cta-sub{font-size:12px;color:#7a828f;margin-top:10px}
+
+/* trial highlight */
+.trial-strip{display:flex;gap:18px;align-items:center;background:var(--navy);color:#fff;padding:20px 22px;flex-wrap:wrap}
+.trial-strip .price{text-align:center;flex-shrink:0}
+.trial-strip .price .v{font-size:34px;font-weight:900;color:#ffb38a}
+.trial-strip .price .l{font-size:11px;color:#9db4d8}
+.trial-strip .txt{flex:1;min-width:240px;font-size:13px;color:#e2e9f4}
+.trial-strip .txt b{color:#fff}
+
+/* onboarding */
+#onboard{display:none}
+#onboard.show{display:block}
+.ob-progress{display:flex;gap:6px;padding:18px 22px 0}
+.ob-progress .seg{flex:1;height:6px;border-radius:3px;background:var(--line)}
+.ob-progress .seg.done{background:var(--accent)}
+.ob-step{display:none}
+.ob-step.show{display:block}
+.ob-step-label{padding:14px 22px 4px;font-size:13px;font-weight:900;color:var(--navy-2)}
+.ob-nav{display:flex;justify-content:space-between;padding:18px 22px 24px}
+.ob-btn{font-family:inherit;font-size:14px;font-weight:700;padding:11px 30px;border-radius:8px;cursor:pointer;border:1.5px solid var(--line);background:#fff}
+.ob-btn.next{background:var(--navy);color:#fff;border-color:var(--navy)}
+.ai-note{display:flex;gap:10px;background:#eef4ff;border:1px solid #c6d8f5;border-radius:8px;padding:12px 16px;margin:14px 22px;font-size:12px;color:#1d3a66;align-items:flex-start}
+.ai-note .ic{flex-shrink:0;font-weight:900}
+
+/* timeline */
+.timeline{padding:20px 22px 26px}
+.tl-item{display:flex;gap:14px;position:relative;padding-bottom:22px}
+.tl-item:last-child{padding-bottom:0}
+.tl-item::before{content:"";position:absolute;left:14px;top:30px;bottom:0;width:2px;background:var(--line)}
+.tl-item:last-child::before{display:none}
+.tl-dot{width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0;z-index:1}
+.tl-dot.ai{background:var(--teal)}
+.tl-body h4{font-size:14px;font-weight:700}
+.tl-body h4 .who{font-size:11px;font-weight:700;padding:2px 8px;border-radius:3px;margin-left:8px;vertical-align:middle}
+.who.auto{background:var(--teal-bg);color:var(--teal)}
+.who.human{background:#eef2f8;color:#5a6577}
+.who.client{background:var(--amber-bg);color:var(--accent-dark)}
+.tl-body p{font-size:12px;color:#7a828f}
+
+/* faq */
+.faq{padding:8px 22px 20px}
+.faq dt{font-size:14px;font-weight:700;padding:14px 0 4px;color:var(--navy-2)}
+.faq dd{font-size:13px;color:#5a6577;border-bottom:1px dashed var(--line);padding-bottom:12px}
+
+/* modal */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(18,36,66,.55);z-index:50;align-items:center;justify-content:center;padding:20px}
+.modal-bg.show{display:flex}
+.modal{background:#fff;border-radius:12px;max-width:470px;width:100%;padding:30px;text-align:center}
+.modal .check{width:56px;height:56px;border-radius:50%;background:var(--teal-bg);color:var(--teal);font-size:28px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.modal h3{font-size:18px;font-weight:900;margin-bottom:8px}
+.modal p{font-size:13px;color:#5a616d;margin-bottom:18px}
+.modal .paybtns{display:flex;flex-direction:column;gap:10px}
+.modal .paybtn{padding:13px;border-radius:8px;border:1.5px solid var(--line);background:#fff;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.modal .paybtn.main{background:var(--navy);color:#fff;border-color:var(--navy)}
+.modal .close{margin-top:16px;background:none;border:none;font-size:12px;color:#7a828f;cursor:pointer;text-decoration:underline;font-family:inherit}
+footer{text-align:center;font-size:12px;color:#8a909b;padding:26px 20px}
+@media(max-width:640px){.frow{grid-template-columns:1fr}.flabel{padding:10px 16px}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">営業<span>ハック</span></div>
+  <div class="hnav">テックタッチ営業支援（β）</div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">SALES COMPATIBILITY CHECK</div>
+  <h1>あなたの商材、テレアポで売れる？<br><em>60秒</em>で相性診断＆料金シミュレーション</h1>
+  <p>打ち合わせ不要。商材のことを教えていただくだけで、アポ想定率と概算費用をその場で算出。まずは100コール・29,800円のテストから、営業のプロが動きます。</p>
+  <div class="badges">
+    <span class="badge">初回テスト 29,800円ポッキリ</span>
+    <span class="badge">打ち合わせ0回</span>
+    <span class="badge">個人事業主・小規模OK</span>
+  </div>
+</section>
+
+<main>
+
+<div class="card">
+  <div class="trust-inner">
+    <div class="trust-photo">笹</div>
+    <div class="trust-body">
+      <div class="trust-eyebrow">MESSAGE FROM CEO</div>
+      <h2>「営業の悩みを0にする」。<br>そのノウハウを、もっと小さな挑戦にも。</h2>
+      <p>営業ハックは、代表・笹田裕嗣のもと300社以上の営業支援を重ねてきた営業のプロ集団です。テレアポは「かければ取れる」ものではありません。リスト・スクリプト・トーク——すべてに現場で磨かれた型があります。これまで法人向けフルサポートが中心だったこの型を、個人事業主や小さなチームの挑戦にも届けたい。その想いから、このテックタッチプランは生まれました。</p>
+      <div class="trust-stats">
+        <div class="ts"><b>300社+</b><span>営業支援実績</span></div>
+        <div class="ts"><b>8年目</b><span>営業支援ひと筋</span></div>
+        <div class="ts"><b>45名</b><span>全国の架電チーム</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head"><div class="bar"></div><h2>商材について教えてください</h2><span class="sub">この回答がそのままスクリプト設計に使われます</span></div>
+
+  <div class="frow">
+    <div class="flabel">① どんなサービス？<span class="req">必須</span></div>
+    <div class="fctrl">
+      <select id="svcType">
+        <option value="1.0" data-rate="1.0">IT・SaaS・システム</option>
+        <option value="1.0" data-rate="2.0">人材・採用支援</option>
+        <option value="0.9" data-rate="1.5">広告・マーケ・制作</option>
+        <option value="1.0" data-rate="1.0">コンサル・士業</option>
+        <option value="1.1" data-rate="2.5">製造・卸・設備</option>
+        <option value="0.85" data-rate="3.0">店舗向けサービス</option>
+        <option value="1.0" data-rate="2.0">その他</option>
+      </select>
+      <input type="text" placeholder="サービスを一言で（例：飲食店向け採用サイト）" style="flex:1;min-width:240px">
+    </div>
+  </div>
+
+  <div class="frow">
+    <div class="flabel">② ターゲットは？<span class="req">必須</span></div>
+    <div class="fctrl">
+      <div class="pillgroup" id="target">
+        <button class="pill on" data-v="1.0">個人事業主・小規模</button>
+        <button class="pill" data-v="1.1">中小企業</button>
+        <button class="pill" data-v="1.35">中堅企業</button>
+        <button class="pill" data-v="1.6">大手企業</button>
+      </div>
+      <input type="text" placeholder="業界・エリア（例：首都圏の飲食店）" style="width:100%">
+    </div>
+  </div>
+
+  <div class="frow">
+    <div class="flabel">③ 一番の強みは？<span class="req">必須</span></div>
+    <div class="fctrl">
+      <input type="text" placeholder="例：競合の半額で初期費用なし／導入実績300社" style="width:100%">
+      <span class="hint">スクリプトの「刺さる一言」に使います</span>
+    </div>
+  </div>
+
+  <div class="frow">
+    <div class="flabel">④ 商材の最低価格帯<span class="req">必須</span></div>
+    <div class="fctrl">
+      <div class="pillgroup" id="priceBand">
+        <button class="pill" data-v="low">月1万円未満</button>
+        <button class="pill on" data-v="mid">月1〜5万円</button>
+        <button class="pill" data-v="high">月5〜20万円</button>
+        <button class="pill" data-v="ent">月20万円以上</button>
+      </div>
+      <span class="hint">アポ単価が商材価格に見合うか（採算ライン）を診断します</span>
+    </div>
+  </div>
+
+  <div class="frow">
+    <div class="flabel">⑤ アポで回収する情報<span class="req">必須</span></div>
+    <div class="fctrl">
+      <div style="width:100%;font-size:13px;color:#5a6577;margin-bottom:4px">基本セット（担当者名・部署名・連絡先）は<b>全プラン込み</b>。追加ヒアリングは3つまで選べます <span class="counter" id="chipCount">0/3</span></div>
+      <div class="chips" id="chips">
+        <button class="chip" data-p="2000">現状の課題感</button>
+        <button class="chip" data-p="2000">導入時期・予算感</button>
+        <button class="chip" data-p="2000">現在の利用サービス</button>
+        <button class="chip" data-p="2000">決裁フロー・決裁者</button>
+        <button class="chip" data-p="2000">従業員数・規模感</button>
+      </div>
+      <span class="hint">追加1項目につき +2,000円/アポ（ヒアリングが深くなるほど接続時間が延び、アポ率が下がるため）</span>
+    </div>
+  </div>
+
+  <div class="frow">
+    <div class="flabel">⑥ 架電リストの種類<span class="req">必須</span></div>
+    <div class="fctrl">
+      <div class="pillgroup" id="listType">
+        <button class="pill on" data-v="cold">白地リスト（新規開拓）</button>
+        <button class="pill" data-v="warm">リード有り（問い合わせ・名刺・休眠顧客）</button>
+      </div>
+      <span class="hint">リード有りリストはアポ率が大きく上がるため、単価が下がります</span>
+    </div>
+  </div>
+
+  <div class="frow">
+    <div class="flabel">⑦ 月間アポ上限（目標）</div>
+    <div class="fctrl">
+      <input type="number" id="count" value="3" min="1" max="30"> 件
+      <span class="hint">この件数を超える請求は発生しません（10件未満がテックタッチプランの対象）</span>
+    </div>
+  </div>
+  <div class="frow">
+    <div class="flabel">⑧ 担当者情報回収の月間上限</div>
+    <div class="fctrl">
+      <input type="number" id="infoCount" value="5" min="0" max="50"> 件
+      <span class="hint">アポに至らなくても担当者名・部署・連絡先が取れた件数の上限。0にすればアポのみの成果報酬になります</span>
+    </div>
+  </div>
+  <div class="frow">
+    <div class="flabel">⑨ アポログの提供形式</div>
+    <div class="fctrl">
+      <div class="pillgroup" id="logType">
+        <button class="pill on" data-log="text">テキスト要約（標準・込み）</button>
+        <button class="pill" data-log="rec">録音データそのまま（+1,000円/アポ）</button>
+      </div>
+      <span class="hint">全アポの通話内容を確認できます。録音データは商談前の温度感チェックや社内教育にも使えます</span>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head"><div class="bar"></div><h2>診断結果・概算料金</h2><span class="sub">入力に合わせてリアルタイム更新</span></div>
+
+  <div class="diag">
+    <div class="diag-mark good" id="diagMark">◎</div>
+    <div class="diag-body">
+      <h3 id="diagTitle">テレアポとの相性：良好</h3>
+      <p id="diagDesc"></p>
+    </div>
+  </div>
+
+  <div class="range">
+    <div class="range-label">初月のお支払い金額</div>
+    <div class="range-vals">
+      <div class="rv"><div class="l">成果ゼロなら</div><div class="v">¥29,800</div><div class="s">テストコール100件のみ</div></div>
+      <div class="range-tilde">〜</div>
+      <div class="rv max"><div class="l">上限まで成果が出ても</div><div class="v" id="maxOut">—</div><div class="s">これ以上の請求はありません</div></div>
+    </div>
+    <div class="range-break" id="breakdown"></div>
+  </div>
+
+  <details class="detail-box">
+    <summary>算出根拠・詳細の数字を見る</summary>
+    <table class="result-table">
+      <tr><td>想定アポ率<span class="sub">100コールあたりの期待値</span></td><td><span class="mono" id="rateOut">—</span><span class="unit">%</span></td></tr>
+      <tr><td>アポ成果報酬単価<span class="sub">テスト後の継続プラン適用</span></td><td><span class="mono" id="unitOut">—</span><span class="unit">円/件</span></td></tr>
+      <tr><td>担当者情報 回収単価<span class="sub">アポ単価の30%</span></td><td><span class="mono" id="infoOut">—</span><span class="unit">円/件</span></td></tr>
+      <tr><td>月間想定コール数<span class="sub">アポ上限から逆算</span></td><td><span class="mono" id="callsOut">—</span><span class="unit">コール</span></td></tr>
+      <tr><td>想定受注率<span class="sub">アウトバウンド経由の一般値（白地10%・リード有り20%）</span></td><td><span class="mono" id="cvOut">—</span><span class="unit">%</span></td></tr>
+      <tr><td>1受注に必要なアポ数<span class="sub">受注率から逆算</span></td><td><span class="mono" id="apoPerDeal">—</span><span class="unit">件</span></td></tr>
+      <tr><td>想定受注獲得単価（CPA）<span class="sub">アポ単価 × 1受注に必要なアポ数</span></td><td><span class="mono" id="cpaOut">—</span><span class="unit">円/受注</span></td></tr>
+      <tr class="total"><td>継続月の成果報酬上限<span class="sub">2ヶ月目以降・テスト費用なし</span></td><td><span class="mono" id="totalOut">—</span><span class="unit">円/月</span></td></tr>
+    </table>
+  </details>
+
+  <div class="notice">
+    ※ 想定アポ率は業界平均をもとにした概算であり、成果を保証するものではありません。<br>
+    ※ テストコール100件の結果レポート（接続率・反応傾向・断り文句の分析）をお渡しします。継続時は29,800円を初月費用に全額充当します。<br>
+    ※ 継続プランではアポ未達分の費用は発生しません（完全成果報酬）。<br>
+    ※ お支払いの完了確認をもって準備（スクリプト監修・メンバーレクチャー・アサイン）を開始します。原則10日で架電スタート、お急ぎの場合は特急オプション（+5,000円）で最短5営業日。<br>
+    ※ アポに至らなくても、担当者名・部署・連絡先が回収できた場合は「担当者情報」として成果カウント（アポ単価の30%）。次回架電やメール営業の資産になります。
+  </div>
+
+  <div class="trial-strip">
+    <div class="price"><div class="v">¥29,800</div><div class="l">初回テスト（税別）</div></div>
+    <div class="txt"><b>アポが3件取れても29,800円ポッキリ。</b>取れたアポはそのままお渡しします。もし1件も取れなくても、100コール分の市場の生の反応データが手に入ります。「テレアポに向いているか」を最小リスクで検証できるテストです。</div>
+  </div>
+
+  <div class="cta-area">
+    <button class="cta" id="applyBtn">テストコール100件を申し込む</button>
+    <p class="cta-sub">このあと5分のフォーム入力だけ。お支払い完了から原則10日（特急なら最短5営業日）で架電開始</p>
+  </div>
+</div>
+
+<div class="card" id="onboard">
+  <div class="card-head"><div class="bar"></div><h2>お申し込みフォーム（キックオフ・商材勉強会の代わりです）</h2></div>
+  <div class="ob-progress">
+    <div class="seg done" id="seg1"></div><div class="seg" id="seg2"></div><div class="seg" id="seg3"></div>
+  </div>
+
+  <div class="ob-step show" id="obs1">
+    <div class="ob-step-label">STEP 1/3　基本情報</div>
+    <div class="frow"><div class="flabel">会社名・屋号<span class="req">必須</span></div><div class="fctrl"><input type="text" placeholder="株式会社〇〇／屋号"></div></div>
+    <div class="frow"><div class="flabel">メールアドレス<span class="req">必須</span></div><div class="fctrl"><input type="text" placeholder="info@example.com"><span class="hint">申込確認・アポ自動報告・レポートの送付先になります</span></div></div>
+    <div class="frow"><div class="flabel">架電先に伝える折り返し番号<span class="req">必須</span></div><div class="fctrl"><input type="text" placeholder="03-XXXX-XXXX"></div></div>
+    <div class="frow"><div class="flabel">アポの日程調整方法<span class="req">必須</span></div><div class="fctrl"><div class="pillgroup"><button class="pill on">日程調整ツールのURL</button><button class="pill">可能な曜日・時間帯を指定</button></div></div></div>
+    <div class="frow"><div class="flabel">スタート希望日<span class="req">必須</span></div><div class="fctrl">
+      <input type="date" style="font-family:inherit;font-size:15px;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:#fff">
+      <div class="pillgroup" id="rush" style="width:100%">
+        <button class="pill on" data-rush="0">通常スタート（お支払い完了から10日目以降）</button>
+        <button class="pill" data-rush="5000">特急スタート（+5,000円・最短5営業日）</button>
+      </div>
+      <span class="hint">スクリプト監修・メンバーのレクチャー・アサインに原則10日をいただいています。お支払いの完了確認をもって準備を開始します</span>
+    </div></div>
+    <div class="frow"><div class="flabel">アポNG条件<span class="req">必須</span></div><div class="fctrl">
+      <div class="chips" id="ngChips">
+        <button class="chip">同業サービス導入済みの企業（リプレイス提案はしない）</button>
+        <button class="chip">今すぐ検討できない企業（中長期の情報収集はNG）</button>
+        <button class="chip">資料受け取りのみで終わりそうな企業</button>
+        <button class="chip">同業他社・競合にあたる企業</button>
+      </div>
+      <input type="text" placeholder="その他のNG条件（自由記入）" style="width:100%">
+      <span class="hint">当てはまるものを選択。導入済み企業へのリプレイス提案や中長期検討をOKにすると、アポ数は増えやすくなります</span>
+    </div></div>
+    <div class="ob-nav"><span></span><button class="ob-btn next" onclick="obGo(2)">次へ</button></div>
+  </div>
+
+  <div class="ob-step" id="obs2">
+    <div class="ob-step-label">STEP 2/3　リスト条件</div>
+    <div class="frow"><div class="flabel">架電対象エリア<span class="req">必須</span></div><div class="fctrl"><input type="text" placeholder="例：首都圏・大阪"></div></div>
+    <div class="frow"><div class="flabel">対象業種・企業規模<span class="req">必須</span></div><div class="fctrl"><textarea placeholder="例：従業員30名以下の飲食店。多店舗展開しているとなお良い"></textarea></div></div>
+    <div class="frow"><div class="flabel">理想の獲得企業 1社</div><div class="fctrl"><input type="text" placeholder="例：〇〇株式会社"><span class="hint">この企業に似た条件でリストを設計します</span></div></div>
+    <div class="frow"><div class="flabel">リードリストの共有<span class="req">必須</span></div><div class="fctrl"><div class="pillgroup"><button class="pill on">白地なのでおまかせ</button><button class="pill">手持ちリストをアップロード</button></div></div></div>
+    <div class="ob-nav"><button class="ob-btn" onclick="obGo(1)">戻る</button><button class="ob-btn next" onclick="obGo(3)">次へ</button></div>
+  </div>
+
+  <div class="ob-step" id="obs3">
+    <div class="ob-step-label">STEP 3/3　商材理解（AIスクリプト生成の材料になります）</div>
+    <div class="frow"><div class="flabel">誰のどんな悩みを解決？<span class="req">必須</span></div><div class="fctrl"><textarea placeholder="箇条書きで多いほど精度が上がります。例：・採用コストを下げたい ・応募が集まらない"></textarea></div></div>
+    <div class="frow"><div class="flabel">競合3社と違い<span class="req">必須</span></div><div class="fctrl"><textarea placeholder="例：A社より安い／B社と違いサポート付き"></textarea></div></div>
+    <div class="frow"><div class="flabel">サービス資料</div><div class="fctrl"><div class="pillgroup"><button class="pill on">PDFをアップロード</button><button class="pill">URLで共有</button></div><span class="hint">資料からもAIが商材情報を読み取ります</span></div></div>
+    <div class="frow"><div class="flabel">お支払い方法<span class="req">必須</span></div><div class="fctrl">
+      <div class="pillgroup" id="payMethod">
+        <button class="pill on" data-pay="credit">クレジットカード</button>
+        <button class="pill" data-pay="paypay">PayPay</button>
+        <button class="pill" data-pay="bank">銀行振込（3営業日以内）</button>
+      </div>
+      <span class="hint">クレジット・PayPayはこの場で決済完了→そのまま架電準備に入ります。振込は入金確認後の準備開始となります</span>
+    </div></div>
+    <div class="ai-note"><span class="ic">AI</span><span>シミュレーションとこのフォームの回答をもとに、AIがトークスクリプト草案とリスト抽出条件を自動生成します。営業のプロが監修・メンバーレクチャーを行い、Web上でご確認いただいたのち、お支払い完了から原則10日（特急オプションで最短5営業日）で架電を開始します。</span></div>
+    <div class="ob-nav"><button class="ob-btn" onclick="obGo(2)">戻る</button><button class="ob-btn next" onclick="showPay()">入力を完了して決済へ</button></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head"><div class="bar"></div><h2>お申し込みから架電開始まで</h2></div>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-dot">1</div><div class="tl-body"><h4>診断＆Web申込・お支払い<span class="who client">お客様</span></h4><p>このページで完結（所要10〜15分）。お支払い完了の確認をもって準備開始となります</p></div></div>
+    <div class="tl-item"><div class="tl-dot ai">AI</div><div class="tl-body"><h4>スクリプト草案・リスト条件を自動生成<span class="who auto">自動</span></h4><p>ご回答と資料からトークスクリプトとリスト抽出条件を生成</p></div></div>
+    <div class="tl-item"><div class="tl-dot">2</div><div class="tl-body"><h4>営業のプロが監修・メンバーレクチャー<span class="who human">営業ハック</span></h4><p>300社以上の支援ノウハウで品質チェックし、商材に合う架電メンバーをアサイン・レクチャー</p></div></div>
+    <div class="tl-item"><div class="tl-dot">3</div><div class="tl-body"><h4>Web上でスクリプト・リストを確認<span class="who client">お客様</span></h4><p>打ち合わせ不要。画面上で確認・コメント・承認</p></div></div>
+    <div class="tl-item"><div class="tl-dot">4</div><div class="tl-body"><h4>テストコール100件 実施<span class="who human">営業ハック</span></h4><p>お支払い完了から原則10日で架電開始(特急オプションで最短5営業日)。結果レポートをお渡しします</p></div></div>
+    <div class="tl-item"><div class="tl-dot">5</div><div class="tl-body"><h4>継続判断<span class="who client">お客様</span></h4><p>データを見てから継続を判断。継続時は29,800円を初月に全額充当</p></div></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head"><div class="bar"></div><h2>よくある質問</h2></div>
+  <dl class="faq">
+    <dt>Q. 本当に打ち合わせなしで大丈夫？</dt>
+    <dd>このページのフォームが、従来のキックオフ・商材勉強会で伺っていた内容そのものです。ご回答が具体的なほどスクリプト精度が上がります。不明点があれば架電開始前にチャットで確認させていただきます。</dd>
+    <dt>Q. テストでアポが取れたら追加費用は？</dt>
+    <dd>かかりません。テストコール100件は何件アポが取れても29,800円のままで、アポはそのままお渡しします。</dd>
+    <dt>Q. テストで1件も取れなかったら？</dt>
+    <dd>100コール分の反応データ（接続率・断り文句の傾向・見込み度）をレポートでお渡しします。「リスト（ターゲット選定）の問題か」「訴求の問題か」「時期の問題か」「テレアポ以外が向いているか」の判断材料になります。テレアポの成果を左右する最大の要素はリストです。テストの結果、ターゲットの見直しで改善が見込める場合はリスト条件の再設計をご提案します。</dd>
+    <dt>Q. 月10件以上アポが欲しい場合は？</dt>
+    <dd>専任チームが付くフルサポート型をご案内します。シミュレーション結果画面からそのまま無料相談をお申し込みいただけます。</dd>
+  </dl>
+</div>
+
+</main>
+
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <div class="check">✓</div>
+    <h3>テストコール100件 お申し込み</h3>
+    <p id="modalSummary"></p>
+    <div class="paybtns" id="payBtns"></div>
+    <button class="close" onclick="document.getElementById('modal').classList.remove('show')">閉じる</button>
+    <p style="font-size:11px;color:#a0a6b0;margin-top:14px">※デモ環境のため決済は動作しません</p>
+  </div>
+</div>
+
+<footer>© 株式会社営業ハック</footer>
+
+<script>
+const BASE = 12000;
+const state = { chips: 0 };
+function getPill(id){ const el=document.querySelector('#'+id+' .pill.on'); return el?el.dataset.v:null; }
+document.querySelectorAll('.pillgroup').forEach(g=>{
+  g.addEventListener('click',e=>{
+    if(!e.target.classList.contains('pill'))return;
+    g.querySelectorAll('.pill').forEach(p=>p.classList.remove('on'));
+    e.target.classList.add('on');
+    calc();
+  });
+});
+const chipsEl=document.getElementById('chips');
+chipsEl.addEventListener('click',e=>{
+  if(!e.target.classList.contains('chip'))return;
+  const c=e.target;
+  if(c.classList.contains('on')){c.classList.remove('on');}
+  else{
+    const on=chipsEl.querySelectorAll('.chip.on').length;
+    if(on>=3)return;
+    c.classList.add('on');
+  }
+  const on=chipsEl.querySelectorAll('.chip.on').length;
+  document.getElementById('chipCount').textContent=on+'/3';
+  chipsEl.querySelectorAll('.chip').forEach(ch=>{
+    if(!ch.classList.contains('on')) ch.classList.toggle('off', on>=3);
+  });
+  calc();
+});
+document.getElementById('svcType').addEventListener('change',calc);
+document.getElementById('count').addEventListener('input',calc);
+document.getElementById('infoCount').addEventListener('input',calc);
+
+function calc(){
+  const svcOpt=document.getElementById('svcType').selectedOptions[0];
+  const svc=parseFloat(svcOpt.value);
+  const baseRate=parseFloat(svcOpt.dataset.rate);
+  const tgt=parseFloat(document.querySelector('#target .pill.on').dataset.v);
+  const band=getPill('priceBand');
+  const listT=getPill('listType');
+  const nChips=chipsEl.querySelectorAll('.chip.on').length;
+  const cnt=Math.max(1,parseInt(document.getElementById('count').value)||1);
+
+  let unit=BASE*svc*tgt;
+  unit=unit*(listT==='warm'?0.75:1.0);
+  unit=Math.round(unit/100)*100 + nChips*2000;
+  const logT=document.querySelector('#logType .pill.on');
+  if(logT&&logT.dataset.log==='rec')unit+=1000;
+
+  let rate=baseRate/tgt/(1+0.18*nChips);
+  if(listT==='warm')rate*=2.8;
+  rate=Math.min(rate,12);
+  const rateDisp=(Math.round(rate*10)/10).toFixed(1);
+
+  const calls=Math.round(cnt/(rate/100)/10)*10;
+  const infoUnit=Math.round(unit*0.3/100)*100;
+  const infoCnt=Math.max(0,parseInt(document.getElementById('infoCount').value)||0);
+  const apoTotal=unit*cnt;
+  const infoTotal=infoUnit*infoCnt;
+  const total=apoTotal+infoTotal;
+  const maxTotal=29800+total;
+  const cvRate=listT==='warm'?20:10;
+  const apoPerDeal=Math.round(100/cvRate);
+  const cpa=unit*apoPerDeal;
+
+  document.getElementById('rateOut').textContent=rateDisp;
+  document.getElementById('unitOut').textContent=unit.toLocaleString();
+  document.getElementById('infoOut').textContent=infoUnit.toLocaleString();
+  document.getElementById('callsOut').textContent=calls.toLocaleString();
+  document.getElementById('cvOut').textContent=cvRate;
+  document.getElementById('apoPerDeal').textContent=apoPerDeal;
+  document.getElementById('cpaOut').textContent=cpa.toLocaleString();
+  document.getElementById('totalOut').textContent=total.toLocaleString();
+  document.getElementById('maxOut').textContent='¥'+maxTotal.toLocaleString();
+  document.getElementById('breakdown').innerHTML=
+    `内訳：テストコール100件 <b>29,800円</b> ＋ アポ最大 <b>${cnt}件 × ${unit.toLocaleString()}円</b>（${apoTotal.toLocaleString()}円） ＋ 担当者情報 最大 <b>${infoCnt}件 × ${infoUnit.toLocaleString()}円</b>（${infoTotal.toLocaleString()}円）｜2ヶ月目以降はテスト費用なし・29,800円は初月費用に全額充当`;
+
+  const mark=document.getElementById('diagMark'),title=document.getElementById('diagTitle'),desc=document.getElementById('diagDesc');
+  const bandVal={low:8000,mid:30000,high:120000,ent:400000}[band];
+  const ratio=bandVal*12/cpa;
+  if(listT==='warm'&&ratio>=3){
+    mark.textContent='◎';mark.className='diag-mark good';
+    title.textContent='テレアポとの相性：非常に良好';
+    desc.textContent='リード有りリストは受注率も高く、1受注あたりの獲得コスト（CPA）が商材の年間価値を大きく下回ります。休眠リードの掘り起こしは特に費用対効果が出やすい領域です。';
+  }else if(ratio>=3){
+    mark.textContent='◎';mark.className='diag-mark good';
+    title.textContent='テレアポとの相性：良好';
+    desc.textContent='商材の年間価値が想定CPA（1受注あたりの獲得コスト）を大きく上回る水準です。1件の受注で獲得コストを十分回収できる計算になります。';
+  }else if(ratio>=1.2){
+    mark.textContent='○';mark.className='diag-mark mid';
+    title.textContent='テレアポとの相性：条件付きで可';
+    desc.textContent='商材の年間価値でCPAは回収できますが、余裕は大きくありません。追加ヒアリングを絞る、リード有りリストを使う、継続率を高める設計にするなどでCPAを下げるのがおすすめです。';
+  }else{
+    mark.textContent='△';mark.className='diag-mark low';
+    title.textContent='テレアポとの相性：要検討';
+    desc.textContent='想定CPAが商材の年間価値を上回る可能性があります。まずはテストコール100件（29,800円）でリストと訴求の精度を検証するか、フォーム営業など他の手法との比較をおすすめします。';
+  }
+}
+function openOnboard(){
+  const ob=document.getElementById('onboard');
+  ob.classList.add('show');
+  ob.scrollIntoView({behavior:'smooth'});
+}
+document.getElementById('applyBtn').addEventListener('click',openOnboard);
+function obGo(n){
+  for(let i=1;i<=3;i++){
+    document.getElementById('obs'+i).classList.toggle('show',i===n);
+    document.getElementById('seg'+i).classList.toggle('done',i<=n);
+  }
+  document.getElementById('onboard').scrollIntoView({behavior:'smooth'});
+}
+const ngChips=document.getElementById('ngChips');
+if(ngChips){
+  ngChips.addEventListener('click',e=>{
+    if(!e.target.classList.contains('chip'))return;
+    e.target.classList.toggle('on');
+  });
+}
+function showPay(){
+  const unit=document.getElementById('unitOut').textContent;
+  const rate=document.getElementById('rateOut').textContent;
+  const rushEl=document.querySelector('#rush .pill.on');
+  const rushFee=rushEl?parseInt(rushEl.dataset.rush):0;
+  const firstFee=29800+rushFee;
+  document.getElementById('modalSummary').textContent=
+    `初回お支払い ${firstFee.toLocaleString()}円（税別）${rushFee?'（特急スタート込み）':''}｜想定アポ率 ${rate}%｜継続時のアポ単価 ${unit}円/件｜お支払い完了の確認をもって準備を開始します（${rushFee?'最短5営業日':'原則10日'}で架電スタート）`;
+  const pay=document.querySelector('#payMethod .pill.on').dataset.pay;
+  const btns=document.getElementById('payBtns');
+  if(pay==='paypay'){
+    btns.innerHTML=`<button class="paybtn main">PayPayで今すぐ支払う（${firstFee.toLocaleString()}円・QRコード表示）</button><button class="paybtn">支払いリンクをメールで受け取る</button>`;
+  }else if(pay==='bank'){
+    btns.innerHTML=`<button class="paybtn main">振込先を表示する（${firstFee.toLocaleString()}円・お支払い期限：3営業日）</button><button class="paybtn">振込先をメールで受け取る</button>`;
+  }else{
+    btns.innerHTML=`<button class="paybtn main">クレジットカードで決済する（${firstFee.toLocaleString()}円）</button><button class="paybtn">領収書の発行を希望する</button>`;
+  }
+  document.getElementById('modal').classList.add('show');
+}
+calc();
+</script>
+</body>
+</html>

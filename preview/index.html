@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>営業ハック｜営業の一部から任せる100回テレアポテスト</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="portal.css">
+<link rel="stylesheet" href="front.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#122442; --navy-2:#1d3a66; --ink:#2a2d33; --paper:#f7f8fa;
+  --line:#dde3ec; --accent:#e8632c; --accent-dark:#c74e1c;
+  --teal:#0f7d6c; --teal-bg:#e7f4f1; --amber-bg:#fdf1e8; --radius:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Zen Kaku Gothic New',sans-serif;color:var(--ink);background:var(--paper);line-height:1.7}
+.mono{font-family:'IBM Plex Mono',monospace}
+header{background:#0e1d38;color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-weight:900;font-size:19px}.logo span{color:var(--accent)}
+.hnav{font-size:12px;color:#c3d0e4}
+.hero{background:linear-gradient(135deg,#0e1d38 0%,#1d3a66 70%,#25497e 100%);color:#fff;padding:52px 20px 66px;text-align:center;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-80px;top:-80px;width:340px;height:340px;border-radius:50%;background:rgba(232,99,44,.12)}
+.hero::before{content:"";position:absolute;left:-60px;bottom:-120px;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,.05)}
+.hero>*{position:relative;z-index:1}
+.hero .eyebrow{font-size:12px;letter-spacing:.22em;color:#9db4d8;margin-bottom:14px}
+.hero h1{font-size:clamp(23px,5vw,37px);font-weight:900;line-height:1.45}
+.hero h1 em{font-style:normal;color:#ffb38a;border-bottom:4px solid var(--accent);padding-bottom:2px}
+.hero p{margin-top:16px;font-size:14px;color:#c3d0e4;max-width:640px;margin-left:auto;margin-right:auto}
+.hero .badges{display:flex;gap:10px;justify-content:center;margin-top:24px;flex-wrap:wrap}
+.hero .badge{font-size:12px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.06);padding:6px 16px;border-radius:20px;font-weight:700}
+main{max-width:980px;margin:-30px auto 0;padding:0 16px 80px}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-bottom:24px;box-shadow:0 1px 3px rgba(18,36,66,.05),0 4px 14px rgba(18,36,66,.04)}
+
+/* trust */
+.trust-inner{display:flex;gap:22px;padding:26px 24px;align-items:flex-start;flex-wrap:wrap}
+.trust-photo{width:84px;height:84px;border-radius:50%;background:linear-gradient(135deg,var(--navy),#2a5290);color:#fff;font-size:34px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:3px solid #fff;box-shadow:0 2px 10px rgba(18,36,66,.2)}
+.trust-body{flex:1;min-width:260px}
+.trust-eyebrow{font-size:11px;letter-spacing:.18em;color:var(--accent-dark);font-weight:900;margin-bottom:6px}
+.trust-body h2{font-size:19px;font-weight:900;line-height:1.5;margin-bottom:10px;color:var(--navy)}
+.trust-body>p{font-size:13.5px;color:#4a5261;line-height:1.9}
+.trust-stats{display:flex;gap:0;margin-top:18px;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.ts{flex:1;text-align:center;padding:14px 8px;border-right:1px solid var(--line);background:#fafbfd}
+.ts:last-child{border-right:none}
+.ts b{display:block;font-size:22px;font-weight:900;color:var(--navy-2);font-family:'IBM Plex Mono',monospace}
+.ts span{font-size:11px;color:#7a828f;font-weight:700}
+.card-head{border-bottom:1px solid var(--line);padding:16px 22px;display:flex;align-items:center;gap:10px}
+.card-head .bar{width:4px;height:20px;background:var(--accent);border-radius:2px}
+.card-head h2{font-size:16px;font-weight:700}
+.card-head .sub{font-size:12px;color:#7a828f;margin-left:auto}
+
+/* form */
+.frow{display:grid;grid-template-columns:210px 1fr;border-bottom:1px solid var(--line)}
+.frow:last-child{border-bottom:none}
+.flabel{background:#eef2f8;padding:16px 18px;font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:8px}
+.req{font-size:10px;background:var(--accent);color:#fff;padding:2px 8px;border-radius:3px;font-weight:700;flex-shrink:0}
+.fctrl{padding:14px 18px;display:flex;align-items:center;flex-wrap:wrap;gap:10px}
+select,input[type=number],input[type=text],textarea{font-family:inherit;font-size:15px;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:#fff;min-width:220px}
+textarea{width:100%;min-height:64px}
+select:focus,input:focus,textarea:focus{outline:2px solid var(--navy-2);outline-offset:1px}
+.pillgroup{display:flex;gap:8px;flex-wrap:wrap}
+.pill{border:1.5px solid var(--line);background:#fff;border-radius:24px;padding:8px 18px;font-size:13.5px;cursor:pointer;font-family:inherit;transition:all .15s}
+.pill.on{border-color:var(--navy-2);background:var(--navy-2);color:#fff;font-weight:700}
+.hint{font-size:12px;color:#7a828f;width:100%}
+.counter{font-size:12px;font-weight:700;color:var(--navy-2)}
+
+/* hearing chips */
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1.5px dashed var(--line);background:#fff;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;font-family:inherit;color:#5a6577;transition:all .15s}
+.chip.on{border-style:solid;border-color:var(--accent);background:var(--amber-bg);color:var(--accent-dark);font-weight:700}
+.chip.off{opacity:.4;cursor:not-allowed}
+
+/* range summary */
+.range{padding:24px 22px;border-bottom:1px solid var(--line)}
+.range-label{font-size:13px;font-weight:900;color:var(--navy-2);margin-bottom:12px}
+.range-vals{display:flex;align-items:stretch;gap:14px;flex-wrap:wrap}
+.rv{flex:1;min-width:180px;border:1.5px solid var(--line);border-radius:10px;padding:14px 16px;text-align:center}
+.rv .l{font-size:12px;color:#7a828f;font-weight:700}
+.rv .v{font-family:'IBM Plex Mono',monospace;font-size:30px;font-weight:900;color:var(--navy)}
+.rv .s{font-size:11px;color:#8a909b}
+.rv.max{border-color:var(--accent);background:var(--amber-bg)}
+.rv.max .v{color:var(--accent-dark)}
+.range-tilde{display:flex;align-items:center;font-size:22px;font-weight:900;color:#b7bec9}
+.range-break{font-size:12px;color:#5a6577;margin-top:12px;line-height:1.9}
+.range-break b{color:var(--navy-2)}
+.detail-box{border-bottom:1px solid var(--line)}
+.detail-box summary{padding:14px 22px;font-size:13px;font-weight:700;color:var(--navy-2);cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px}
+.detail-box summary::before{content:"▸";transition:transform .15s}
+.detail-box[open] summary::before{transform:rotate(90deg)}
+.detail-box summary::-webkit-details-marker{display:none}
+
+/* result */
+.diag{display:flex;gap:16px;padding:20px 22px;border-bottom:1px solid var(--line);align-items:center;flex-wrap:wrap}
+.diag-mark{width:74px;height:74px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:900;flex-shrink:0}
+.diag-mark.good{background:var(--teal-bg);color:var(--teal)}
+.diag-mark.mid{background:var(--amber-bg);color:var(--accent-dark)}
+.diag-mark.low{background:#f4f5f8;color:#6a7180}
+.diag-body{flex:1;min-width:220px}
+.diag-body h3{font-size:16px;font-weight:900}
+.diag-body p{font-size:13px;color:#5a6577}
+.result-table{width:100%;border-collapse:collapse}
+.result-table td{padding:14px 22px;border-bottom:1px solid var(--line);font-size:14px}
+.result-table td:last-child{text-align:right;font-weight:700}
+.result-table td .sub{display:block;font-size:11px;color:#8a909b;font-weight:400}
+.result-table tr.total td{background:var(--amber-bg);font-size:15px}
+.result-table tr.total td:last-child{color:var(--accent-dark);font-size:22px;font-weight:900}
+.result-table tr.first td{background:#eef4ff}
+.result-table tr.first td:last-child{color:var(--navy-2);font-size:20px;font-weight:900}
+.unit{font-size:13px;color:#7a828f;font-weight:400;margin-left:2px}
+.notice{font-size:12px;color:#8a4a20;background:var(--amber-bg);padding:12px 22px;line-height:1.8}
+.cta-area{text-align:center;padding:26px 22px 30px}
+.cta{display:inline-block;background:var(--accent);color:#fff;font-size:17px;font-weight:900;padding:16px 52px;border-radius:8px;border:none;cursor:pointer;font-family:inherit;box-shadow:0 3px 0 var(--accent-dark);transition:transform .1s}
+.cta:active{transform:translateY(2px);box-shadow:none}
+.cta-sub{font-size:12px;color:#7a828f;margin-top:10px}
+
+/* trial highlight */
+.trial-strip{display:flex;gap:18px;align-items:center;background:var(--navy);color:#fff;padding:20px 22px;flex-wrap:wrap}
+.trial-strip .price{text-align:center;flex-shrink:0}
+.trial-strip .price .v{font-size:34px;font-weight:900;color:#ffb38a}
+.trial-strip .price .l{font-size:11px;color:#9db4d8}
+.trial-strip .txt{flex:1;min-width:240px;font-size:13px;color:#e2e9f4}
+.trial-strip .txt b{color:#fff}
+
+/* onboarding */
+#onboard{display:none}
+#onboard.show{display:block}
+.ob-progress{display:flex;gap:6px;padding:18px 22px 0}
+.ob-progress .seg{flex:1;height:6px;border-radius:3px;background:var(--line)}
+.ob-progress .seg.done{background:var(--accent)}
+.ob-step{display:none}
+.ob-step.show{display:block}
+.ob-step-label{padding:14px 22px 4px;font-size:13px;font-weight:900;color:var(--navy-2)}
+.ob-nav{display:flex;justify-content:space-between;padding:18px 22px 24px}
+.ob-btn{font-family:inherit;font-size:14px;font-weight:700;padding:11px 30px;border-radius:8px;cursor:pointer;border:1.5px solid var(--line);background:#fff}
+.ob-btn.next{background:var(--navy);color:#fff;border-color:var(--navy)}
+.ai-note{display:flex;gap:10px;background:#eef4ff;border:1px solid #c6d8f5;border-radius:8px;padding:12px 16px;margin:14px 22px;font-size:12px;color:#1d3a66;align-items:flex-start}
+.ai-note .ic{flex-shrink:0;font-weight:900}
+
+/* timeline */
+.timeline{padding:20px 22px 26px}
+.tl-item{display:flex;gap:14px;position:relative;padding-bottom:22px}
+.tl-item:last-child{padding-bottom:0}
+.tl-item::before{content:"";position:absolute;left:14px;top:30px;bottom:0;width:2px;background:var(--line)}
+.tl-item:last-child::before{display:none}
+.tl-dot{width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0;z-index:1}
+.tl-dot.ai{background:var(--teal)}
+.tl-body h4{font-size:14px;font-weight:700}
+.tl-body h4 .who{font-size:11px;font-weight:700;padding:2px 8px;border-radius:3px;margin-left:8px;vertical-align:middle}
+.who.auto{background:var(--teal-bg);color:var(--teal)}
+.who.human{background:#eef2f8;color:#5a6577}
+.who.client{background:var(--amber-bg);color:var(--accent-dark)}
+.tl-body p{font-size:12px;color:#7a828f}
+
+/* faq */
+.faq{padding:8px 22px 20px}
+.faq dt{font-size:14px;font-weight:700;padding:14px 0 4px;color:var(--navy-2)}
+.faq dd{font-size:13px;color:#5a6577;border-bottom:1px dashed var(--line);padding-bottom:12px}
+
+/* modal */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(18,36,66,.55);z-index:50;align-items:center;justify-content:center;padding:20px}
+.modal-bg.show{display:flex}
+.modal{background:#fff;border-radius:12px;max-width:470px;width:100%;padding:30px;text-align:center}
+.modal .check{width:56px;height:56px;border-radius:50%;background:var(--teal-bg);color:var(--teal);font-size:28px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.modal h3{font-size:18px;font-weight:900;margin-bottom:8px}
+.modal p{font-size:13px;color:#5a616d;margin-bottom:18px}
+.modal .paybtns{display:flex;flex-direction:column;gap:10px}
+.modal .paybtn{padding:13px;border-radius:8px;border:1.5px solid var(--line);background:#fff;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.modal .paybtn.main{background:var(--navy);color:#fff;border-color:var(--navy)}
+.modal .close{margin-top:16px;background:none;border:none;font-size:12px;color:#7a828f;cursor:pointer;text-decoration:underline;font-family:inherit}
+footer{text-align:center;font-size:12px;color:#8a909b;padding:26px 20px}
+@media(max-width:640px){.frow{grid-template-columns:1fr}.flabel{padding:10px 16px}}
+#gate{position:fixed;inset:0;background:#0e1d38;color:#fff;display:flex;align-items:center;justify-content:center;z-index:999;padding:20px}
+#gate .box{background:#fff;color:var(--ink);border-radius:12px;padding:32px;max-width:340px;width:100%;text-align:center}
+#gate h2{font-size:16px;font-weight:900;margin-bottom:14px;color:var(--navy)}
+#gate input{width:100%;font-size:15px;padding:11px 12px;border:1px solid var(--line);border-radius:6px;margin-bottom:12px;font-family:inherit}
+#gate button{width:100%;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:11px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+#gate .err{font-size:12px;color:var(--accent-dark);min-height:16px;margin-top:8px}
+#siteContent{display:block}
+</style>
+<link rel="stylesheet" href="brand.css">
+<link rel="stylesheet" href="experience.css">
+</head>
+<body><div style="background:#fff2d9;color:#624718;text-align:center;padding:10px;font-size:13px">操作デモです。実際の申し込み・決済・メール送信・架電は行いません。個人情報は入力せず、サンプルでお試しください。</div>
+
+<div id="siteContent">
+
+
+<header class="topnav official-header"><div class="official-topline"><a class="brand" href="#"><img src="assets/eigyohack-logo.webp" alt="株式会社 営業ハック" width="180" height="41"></a><span class="brand-purpose">営業の悩みを0にする</span></div><nav class="official-nav"><a href="https://eigyou-hack.com/" target="_blank" rel="noopener">ホーム（公式）</a><a href="#serviceOverview">営業支援事業</a><a href="#addedPlan">100回テスト</a><a href="#methodDiagnosis">営業手法の診断</a><a href="#howItWorks">ご利用の流れ</a><a class="official-contact" href="https://eigyou-hack.com/contact" target="_blank" rel="noopener">お問い合わせ（公式）</a></nav></header>
+<div class="demo-top">営業代行ページへの追加掲載イメージ｜企画検討用の操作デモです。本番の公式サイトは変更していません。</div>
+<section class="service-context" id="serviceOverview"><div class="service-context-inner"><h1>完全成果報酬型テレアポ代行事業</h1><p>SALES AGENT</p></div></section>
+<main class="v3main">
+ <section class="service-intro"><span class="section-number">営業ハックの営業支援</span><h2>営業の目的に合わせて、<br>必要な支援をお選びください。</h2><div class="plan-options"><article><span class="plan-label">既存プラン</span><h3>継続的なアポ獲得を<br>しっかり任せたい。</h3><p>成果報酬型で営業の支援を相談したい方へ。</p><a href="https://eigyou-hack.com/sales-agency" target="_blank" rel="noopener">既存サービスの詳細を公式で確認 ↗</a></article><article class="new-plan"><span class="plan-label">追加プラン案</span><h3>まずは営業の一部だけ、<br>小さく任せてみたい。</h3><p>一人社長や少人数のチームが、電話営業の反応を確かめる入口へ。</p><a href="#addedPlan">100回テレアポテストを見る ↓</a></article></div><p class="service-distinction">既存の完全成果報酬プランと、以下の有料100回テストは別プランです。テストはアポ0件でも一式料金がかかります。</p></section>
+ <section class="added-plan" id="addedPlan"><div class="addition-tag">追加プラン掲載イメージ</div><p class="empathy-lead">AIで、仕事は便利になった。<br>でも、知ってもらうための営業は、<br>まだ自分で抱えている。</p><h2>営業の一部だけ、<br><em>任せませんか。</em></h2><p class="founder-message">採用や、毎月数十万円の契約までは考えていない。<br>そんな一人社長の「少しだけ任せたい」に応える、<br><strong>営業ハックの100回テレアポテスト。</strong></p><div class="hero-action-pair"><a class="primary" href="#methodDiagnosis">営業の進め方を診断する ↓</a><a class="secondary" href="#afterApplication">申込後の体験を見る ↓</a></div><p class="offer-context">診断でいくつかの営業手法を整理し、最初はテレアポで試します。</p></section>
+ <section class="empathy-section"><div class="section-number">こんな時間を、減らしたい。</div><div class="concern-grid"><article><span class="concern-icon">01</span><h3>採用したら、<br>教育も毎月の負担も。</h3><p>営業を任せたい。でも、人を雇って育てる余裕まではない。</p></article><article><span class="concern-icon">02</span><h3>何度も説明して、<br>また打ち合わせ。</h3><p>営業のための準備や会議で、自分の時間が埋まってしまう。</p></article><article><span class="concern-icon">03</span><h3>結果だけ聞いても、<br>次に何をすれば？</h3><p>うまくいった理由も、次の打ち手も分からないまま終わりたくない。</p></article></div></section>
+ <section class="plan-promise"><div><span class="section-number">手間は減らす。監修は省かない。</span><h2>頼みやすく。<br>進み具合が見えて。<br>次の行動まで分かる。</h2><p>AIを活かせる情報整理や準備は効率化。商材ごとのトーク作成・監修と、人による架電は残す設計です。</p></div><ol><li><b>01</b><div><h3>フォームで、要望をまとめて伝える。</h3><p>禁止先・禁止ワード・聞いてほしいことを入力。不足だけをメールで確認します。</p></div></li><li><b>02</b><div><h3>今どこまで進み、次はいつかが分かる。</h3><p>トーク送付・開始・報告の予定日と実施記録を確認。遅れる場合も理由をご案内します。</p></div></li><li><b>03</b><div><h3>反応を見て、次の営業施策を考える。</h3><p>件数だけで終わらず、相手の反応と次のアプローチをレポートで整理します。</p></div></li></ol></section>
+<section class="illustration-section"><span class="section-number">お任せする範囲のイメージ</span><h2>新規開拓の電話を任せて、<br>商談と本業に集中する。</h2><div class="illustration-grid"><article><img src="assets/owner-work.svg" alt="営業も本業も一人で抱えている社長" width="360" height="240"><div><span>BEFORE</span><h3>全部、自分で抱えている。</h3><p>電話、準備、見込み先の管理。<br>気づけば営業以外の時間がなくなる。</p></div></article><article><img src="assets/team-support.svg" alt="営業ハックがトーク監修と電話を担当" width="360" height="240"><div><span>SUPPORT</span><h3>電話と準備を任せる。</h3><p>営業ハックが作成・監修。<br>担当者が電話し、進捗を共有する。</p></div></article><article><img src="assets/next-action.svg" alt="レポートを受け取り次の行動を決める" width="360" height="240"><div><span>NEXT ACTION</span><h3>次に何をするかが分かる。</h3><p>商談の準備、対象の見直し。<br>結果を使って次の行動を決める。</p></div></article></div><p class="micro">サービスの進め方を説明するイメージ図です。成果や売上の変化を保証するものではありません。</p></section>
+ <section id="methodDiagnosis" class="diagnosis-section"><div class="section-number">営業手法の診断</div><h2>4つ選んで、<br>営業の進め方を整理しましょう。</h2><p class="section-lead">あなたの商材や見込み先に合わせて、営業手法の候補を整理します。最初にお引き受けするのは、電話による新規開拓の100回テストです。</p><div class="diagnosis-shell"><div class="diagnosis-progress" id="diagnosisProgress"></div><div id="diagnosisWizard"><div class="question-number" id="diagnosisNumber"></div><h3 id="diagnosisQuestion" tabindex="-1"></h3><p id="diagnosisHint"></p><fieldset class="diagnosis-options" id="diagnosisOptions"></fieldset><div class="diagnosis-actions"><button class="secondary" id="diagnosisBack" disabled>← 前の質問</button><button class="primary" id="diagnosisNext" disabled>次の質問 →</button></div></div><div id="diagnosisResult" hidden><span class="plan-label">営業手法の候補</span><h3 tabindex="-1" id="diagnosisResultTitle">この進め方を、検討してみませんか。</h3><div id="diagnosisMethods" class="method-grid"></div><p class="micro">回答から整理した候補です。効果を保証する診断ではありません。</p><div class="phone-first"><div class="phone-first-icon" aria-hidden="true">☎</div><div><span>最初に試すプラン</span><h4>テレアポ100回で、反応を確かめる。</h4><p id="diagnosisPhoneMessage"></p></div><button class="primary" id="diagnosisToSim">テレアポの参考単価を試算する ↓</button></div><button class="textbtn" id="diagnosisRestart">回答を見直す</button></div></div></section>
+ <section id="simulation" class="sim-section"><div class="section-number">テレアポの費用感をシミュレーション</div><h2>あなたの条件なら、<br class="mobile-br">1アポにいくらかかる？</h2><p class="section-lead">初期値は説明用の仮定です。実績があれば置き換えてください。業界平均や成果予測として扱わず、見積もりの考え方を確かめるために使います。</p>
+ <div id="diagnosisSimulationNote" class="note" hidden></div><div class="sim-layout"><div class="sim-inputs panel"><h3>試算の条件</h3><div class="preset-row"><button class="preset active" data-preset="cold">新規開拓の例</button><button class="preset" data-preset="warm">既存リードの例</button><button class="preset" data-preset="hard">接続が難しい例</button></div><label>どんなサービスですか？<input id="introService" value="飲食店向け採用ページ制作" maxlength="100"></label><label>伝えたい強み<input id="introBenefit" value="店舗の求人情報をまとめ、採用活動を支援します。" maxlength="300"></label><div class="sim-fields"><label>担当者への接触率（接続率） <span>%</span><input id="simConnect" aria-describedby="connectHelp" type="number" min="0" max="100" value="10" step="0.1"></label><label>接続後のアポ率 <span>%</span><input id="simAppointment" type="number" min="0" max="100" value="5" step="0.1"></label></div><p id="connectHelp" class="note">接触率がわからない方は、仮の10％のままでOKです。100回の電話で担当者につながる回数を10回と置いて試算します。業界平均や成果の保証ではありません。実績がある方は変更できます。</p><p class="micro">架電全体のアポ率＝担当者接続率×接続後のアポ率。相手の不在・受付でのお断りも含めて試算します。</p><fieldset class="sim-hearing"><legend>追加で聞きたい項目 <b id="simHearingCount">0 / 3</b></legend><div id="simHearing" class="choice-grid"></div><p class="micro">基本情報（担当者名・部署・連絡先）とは別に最大3つ。参考単価には1項目あたり2,000円／アポを仮加算。初回テスト内の成果追加料金はありません。</p></fieldset>
+ <details class="economics" open><summary>受注後の採算も計算する</summary><div class="sim-fields"><label>1回の売上 <span>円</span><input id="simRevenue" type="number" min="0" max="100000000" step="1" value="200000"></label><label>見込継続回数 <span>回</span><input id="simCycles" type="number" min="1" max="120" value="1"></label><label>粗利率 <span>%</span><input id="simMargin" type="number" min="0" max="100" value="50"></label><label>アポからの受注率 <span>%</span><input id="simClose" type="number" min="0" max="100" value="20" step="0.1"></label></div><p class="micro">売上の全額を利益として扱いません。継続回数も確定収益ではなく仮定です。お客様側の商談人件費等はこの計算に含みません。</p></details>
+<p id="simError" class="errorbox" hidden role="alert"></p></div>
+ <div class="sim-results"><div class="reference-quote"><div class="quote-label">この条件を、アポごとの料金に換算すると</div><div class="quote-number" id="referenceUnit">—</div><span class="quote-foot">1アポあたり・税別／条件に基づく参考試算</span><div id="quoteExplanation"></div><p class="micro">実績のある通常価格や値引き前価格ではありません。継続支援の正式単価はテスト後に個別に確認します。</p></div>
+ <div class="funnel panel"><h3>100回架電した場合の想定</h3><div id="simFunnel"></div><p id="simProbability" class="micro"></p></div>
+ <div class="trial-offer"><span class="role-label">最初に試すのはテレアポ。アポ単価で請求しません</span><h3>まずはテレアポ100回を<br>まるっとお引き受けします。</h3><div class="offer-price">29,800<span>円（税別）</span></div><p>不通・再架電を含む100回。リスト代・準備・禁止先精査・トーク作成監修・結果レポートを含みます。</p><ul><li>取れたアポはそのままお渡し</li><li>初回テストの成果による追加料金なし</li><li>継続は結果を見て判断。自動更新なし</li></ul><button class="primary" id="applyBtn">この条件で受け入れ確認へ →</button><p class="micro">商材と対応枠を確認してから支払いをご案内します。アポ件数の保証はありません。</p></div>
+ <div class="panel economics-results"><h3>受注した場合の採算の目安</h3><dl id="simEconomics" class="summary-list"></dl><div id="simVerdict" class="note"></div></div></div></div>
+ <div class="panel scenario-panel"><h3>反応が変わったら、どうなる？</h3><p>接続後のアポ率だけを標準の0.5倍・1倍・1.5倍として比較します。保証される幅ではありません。</p><div class="tablewrap"><table class="screen-table"><thead><tr><th>反応の仮定</th><th>全体アポ率</th><th>想定アポ</th><th>参考単価／アポ</th><th>テスト料金</th></tr></thead><tbody id="scenarioRows"></tbody></table></div><details><summary>計算式を見る</summary><p class="micro">想定アポ数＝100回×接続率×接続後アポ率。参考アポ単価＝基準換算30,000円÷想定アポ数＋追加質問の仮加算。基準換算は説明用の仮定で、相場・通常価格・正式見積もりではありません。100円単位で切り上げ。想定受注数＝想定アポ数×受注率。1受注粗利＝1回の売上×継続回数×粗利率。想定粗利＝想定受注数×1受注粗利。</p></details></div>
+ </section>
+ <section id="howItWorks" class="flow-section"><div class="section-number">03 / 申し込みから継続まで</div><h2>次に何が起きるか、<br>最後まで分かる営業支援。</h2><div class="journey-grid"><article><span>01</span><h3>受け入れ確認</h3><p>商材・条件・開始希望を確認。対応枠がない場合は、支払い前にご案内。</p></article><article><span>02</span><h3>支払い・詳細入力</h3><p>受入確認後に前払い。禁止先・禁止ワード・最大3つのヒアリングを登録。</p></article><article><span>03</span><h3>作成・監修・メール</h3><p>営業ハックがトークを作成・監修。メールで確認いただき、担当者へ引き継ぎ。</p></article><article><span>04</span><h3>架電・途中報告</h3><p>実施日時と結果を記録。次回連絡・進捗・遅延理由をお知らせ。</p></article><article><span>05</span><h3>レポートを納品</h3><p>100回の結果と反応を整理。判断できること・まだ分からないことを分けて説明。</p></article><article><span>06</span><h3>次の営業を相談</h3><p>継続・対象変更・一旦停止を提案。継続先と条件を確認し、お客様が選びます。</p></article></div><button class="secondary" id="launchPortal">申込から継続提案までを体験 →</button></section>
+<section class="after-application" id="afterApplication"><div class="section-number">RELEASE PREVIEW / リリース後の体験</div><h2>申し込んだあと、<br>どんな案内が届く？</h2><p class="section-lead">お客様の目線で、受付から準備・架電・レポート・次の提案までを体験できます。デモ上の日付を進め、実際に届くメールと画面のイメージを確認してください。</p><div class="visual-service-flow" role="img" aria-label="申し込み、メールで確認、営業ハックの準備、架電と報告、次の営業提案へ進む流れ"><div><span>01</span><div class="flow-art mail-art"><i></i></div><h3>依頼する</h3><p>フォームから<br>商材と要望を入力</p></div><b aria-hidden="true">→</b><div><span>02</span><div class="flow-art review-art"><i></i></div><h3>確認する</h3><p>予定の案内と<br>監修済みトークが届く</p></div><b aria-hidden="true">→</b><div><span>03</span><div class="flow-art call-art"><i>☎</i></div><h3>任せる</h3><p>担当者が架電<br>途中の進捗も分かる</p></div><b aria-hidden="true">→</b><div><span>04</span><div class="flow-art chart-art"><i></i><i></i><i></i></div><h3>次を決める</h3><p>結果と次の施策を見て<br>続けるかを選ぶ</p></div></div><button class="primary" id="startCustomerExperience">お客様になって、申込後の流れを体験 →</button><p class="micro">架空の案件での操作体験です。メールの実送信・決済・架電は行いません。</p></section>
+ 
+ <section class="panel faq-v3"><h2>申し込み前に知っておきたいこと</h2><details><summary>アポが0件だったら？</summary><p>100回の実施結果と、取得できた反応をレポートでお渡しします。少数の結果だけで「商材が売れない」と断定しません。情報不足の場合も、その限界を説明します。</p></details><details><summary>どんな要望でも指定できますか？</summary><p>アポ条件は選択肢の範囲、追加ヒアリングは最大3項目です。禁止先と禁止表現は登録できます。決裁者・予算・導入の確約を自由に追加する商品ではありません。</p></details><details><summary>いつ支払い、いつ始まりますか？</summary><p>商材・条件・対応枠を確認した後に支払いをご案内します。入金確認後に準備を開始し、監修済みトークの確認・担当者の準備を経て架電します。各予定日と次回連絡は申込後の画面でご案内します。</p></details></section>
+</main>
+<section id="portal" hidden aria-label="架電準備ポータル">
+ <div class="demo-banner">操作デモ <span>決済・外部送信・実際の架電は行いません。サンプルでお試しください。</span></div>
+ <div class="portal-top"><a href="#" id="backHome">← 商品・試算へ戻る</a><span class="tag">100回営業テスト / 申込から継続提案まで</span><button class="textbtn" id="resetDemo">最初から</button></div>
+ <div class="portal-layout">
+  <aside class="portal-sidebar"><div class="eyebrow">YOUR NEXT STEP</div><h2>打ち合わせの代わりに、<br>ここで準備を。</h2><p>入力した内容が、リストとトーク、担当者への引き継ぎにつながります。</p><ol id="stepList"></ol><div class="sidebar-note"><b>受入確認後にお支払い</b><br>初回テスト一式29,800円（税別）<br>不通・再架電を含む100回。<br>リスト代・準備・禁止先の精査込み。<br>アポによる初回追加料金なし。</div></aside>
+  <div class="portal-content"><div id="customerExperience" class="experience-bar" hidden aria-label="申込後の体験ナビ"><div class="experience-meta"><span class="experience-badge">お客様目線の体験</span><span id="experienceClock"></span><button class="mail-open" id="openExperienceInbox">受信メール <b id="experienceMailCount">0</b></button></div><h3 id="experienceTitle"></h3><p id="experienceText"></p><div class="experience-actions"><button class="primary" id="experienceNext"></button><button class="textbtn" id="experienceDelay" hidden>遅延時の案内も見る</button><button class="textbtn" id="toggleExperienceDetails" aria-pressed="false">運営の確認手順も見る</button></div><small>日付は体験用です。実際の納期は、受入確認時にご案内します。</small></div>
+<div id="serviceStatus" class="status-board" hidden aria-live="polite"></div><div class="step-kicker" id="stepKicker"></div><h1 id="stepTitle" tabindex="-1"></h1><p class="step-desc" id="stepDesc"></p><div id="portalError" class="errorbox" role="alert" hidden></div>
+   <section class="pane" data-step="0">
+    <div class="panel"><span class="role-label">STEP A / お客様</span><h3>まず、商材と対応枠を確認します</h3><p>この段階では支払いはありません。受け入れ可否と開始枠をご案内した後に決済へ進みます。今回の受付はテレアポ100回のテストです。</p><div class="note" id="orderReference"></div><form id="precheckForm"><div class="fields"><label class="wide">サービス名 <span class="required">必須</span><input id="caseService" required maxlength="100" placeholder="例：飲食店向け採用ページ制作"></label><label>案内先<select id="caseAudience"><option value="business">企業・店舗（法人向け）</option><option value="consumer">個人向け（要個別確認）</option></select></label><label>希望するアポ条件<select id="caseCondition"><option value="standard">標準条件の範囲で相談</option><option value="strict">決裁者・予算確保の確約が必須</option></select></label><label class="wide">開始希望日 <input id="caseDate" type="date" required></label></div><button class="primary" type="submit">受け入れ確認を依頼する（デモ） →</button></form><p class="micro">正式な受付ではなく、打ち合わせ用の操作体験です。</p></div>
+    <div class="panel" id="precheckStatus" hidden><h3 id="precheckTitle"></h3><p id="precheckMessage"></p><details class="ops-panel" id="acceptanceOps"><summary>営業ハック側の受け入れ確認を体験（デモ）</summary><label class="checkline"><input type="checkbox" id="acceptProduct">対応できる商材・標準条件であることを確認</label><label class="checkline"><input type="checkbox" id="acceptCapacity">監修・架電の担当と対応枠を確保</label><label class="checkline"><input type="checkbox" id="acceptSchedule">開始希望と予定日を確認</label><button class="secondary" id="acceptCase" disabled>受入可能の案内を再現 →</button></details></div>
+    <div class="panel" id="paymentOffer" hidden><span class="role-label client-role">受入可能のご案内 / デモ</span><h3>初回は100回のテスト一式で。</h3><div class="order"><span>リスト・準備・精査・監修・架電・レポート</span><b>¥29,800 <small>税別</small></b></div><p>不通・再架電を含む100回。アポが取れても、このテスト内で成果による追加料金はありません。アポ件数・接続件数は保証しません。</p><p id="acceptedSchedule" class="note"></p><button class="primary" id="demoPay" disabled>案内された料金の支払いを再現 →</button><p class="micro">実決済・契約締結は行いません。入金確認後にリスト作成等の有償準備を開始する設計です。</p></div>
+   </section>
+   <section class="pane" data-step="1" hidden>
+    <div class="samplebar"><div><b>まずは入力例で体験</b><p>架空の採用支援サービスで、最後まで試せます。入力内容は再読み込みすると消えます。</p></div><button class="secondary" id="fillSample">サンプルを入力</button></div>
+    <form id="intake" novalidate>
+     <div class="panel"><div class="section-number">01 / 基本情報・商材</div><h3>何を、誰に届けますか？</h3><div class="fields">
+      <label>会社名・屋号 <span class="required">必須</span><input id="company" required maxlength="80" placeholder="例：サンプル採用サポート"></label>
+      <label>担当者名 <span class="required">必須</span><input id="contact" required maxlength="60" placeholder="例：サンプル担当"></label>
+      <label>連絡用メール <span class="required">必須</span><input id="email" type="email" required placeholder="demo@example.com"></label>
+      <label>折り返し電話番号 <span class="required">必須</span><input id="callback" type="tel" required placeholder="例：03-0000-0999"></label>
+      <label class="wide">サービス名 <span class="required">必須</span><input id="service" required maxlength="100" placeholder="例：飲食店向け採用ページ制作"></label>
+      <label class="wide">解決する悩み・提供内容 <span class="required">必須</span><textarea id="benefit" required maxlength="500" placeholder="例：求人情報をまとめた採用ページを作成し、店舗の採用活動を支援します。"></textarea></label>
+      <label class="wide">サービス資料のURL <span class="optional">任意</span><input id="material" type="url" placeholder="https://example.com/service"><small>このデモではURLの記録だけを行い、資料の取得・解析は行いません。</small></label>
+      <label>対象業種<select id="industry"><option>飲食店</option><option>IT・情報通信</option><option>製造業</option><option>人材・採用関連</option><option>小売・サービス</option></select></label>
+      <label>対象規模<select id="size"><option>従業員1〜30名</option><option>従業員31〜100名</option><option>従業員101〜300名</option></select></label>
+      <label>対象エリア<select id="area"><option>全国</option><option>首都圏</option><option>関西</option><option>東海</option></select></label>
+      <label>商談可能な時間帯<select id="schedule"><option>平日 10:00〜17:00</option><option>平日 10:00〜12:00</option><option>平日 13:00〜17:00</option></select></label>
+     </div></div>
+     <div class="panel"><div class="section-number">02 / アポ条件</div><h3>提供できる範囲から選択</h3><p>共通条件：サービス概要を伝え、商談への同意と日時を確認したものをアポとします。</p><div class="fields">
+      <label>相手の範囲<select id="appointmentRole"><option>関連業務の担当者（役職不問）</option><option>関連業務の責任者（役員・決裁者の確約なし）</option></select></label>
+      <label>他社サービスの利用<select id="replacement"><option>利用中の企業も対象</option><option>利用中の企業は対象外</option></select></label>
+      <label class="wide">検討状況<select id="readiness"><option>情報収集段階も対象</option><option>課題を認識している相手が対象</option></select></label>
+     </div><div class="note">決裁者限定・予算確保済み・導入時期の確約など、選択肢にない成果条件はこのプランでは追加できません。</div>
+     <fieldset class="hearing"><legend>追加ヒアリング <span id="hearingCount">0 / 3</span></legend><p>基本情報（担当者名・部署・連絡先）とは別に、最大3つまで。回答の取得や特定の回答内容はアポ成立の保証条件ではありません。</p><div id="hearingOptions" class="choice-grid"></div><p id="hearingHint" aria-live="polite" class="micro"></p></fieldset></div>
+     <div class="panel"><div class="section-number">03 / 禁止事項・要望</div><h3>避けたい先と表現を教えてください</h3>
+      <label>アプローチ禁止先 <textarea id="banRows" rows="4" placeholder="企業名,電話番号&#10;サンプル食堂,03-0000-0101&#10;,03-0000-0103"></textarea></label><p class="micro">1行に「企業名,電話番号」。どちらか一方だけでも登録できます。全角数字・ハイフン・法人格の表記ゆれを整理して照合します。</p>
+      <div class="uploadrow"><label class="filelabel">禁止先CSVを読み込む<input id="banCsv" type="file" accept=".csv,text/csv"></label><button class="textbtn" type="button" id="downloadCsv">CSVひな形</button><span id="csvStatus" role="status"></span></div>
+      <label class="checkline"><input id="noBans" type="checkbox">アプローチ禁止先はありません</label>
+      <label>使ってはいけないワード <textarea id="forbidden" maxlength="500" placeholder="1行に1つ。例：格安&#10;必ず採用できる"></textarea></label>
+      <div class="choice-grid" id="restrictionOptions"><label class="checkline"><input type="checkbox" value="成果・効果を断定しない" checked>成果・効果を断定しない</label><label class="checkline"><input type="checkbox" value="未承認の値引き・無料提供を約束しない" checked>未承認の値引き・無料提供を約束しない</label><label class="checkline"><input type="checkbox" value="競合を否定する表現を使わない">競合を否定する表現を使わない</label></div>
+      <label>その他の要望 <span class="optional">任意</span><textarea id="wishes" maxlength="300" placeholder="例：落ち着いた話し方で案内してほしい"></textarea></label><p class="micro">要望は運営の確認対象です。成果条件や追加ヒアリング項目として自動追加されません。</p>
+     </div><div class="actions"><button class="secondary" type="button" data-back="0">戻る</button><button class="primary" type="submit">入力を確定して禁止先を照合 →</button></div>
+    </form>
+   </section>
+   <section class="pane" data-step="2" hidden>
+    <div class="note">架空の候補108行で、入力した禁止企業・電話番号と重複を実際に照合します。商用リストの取得は行いません。</div>
+    <div class="metrics" id="listMetrics"></div>
+    <div class="panel"><h3>候補リストと除外理由</h3><div class="tablewrap"><table class="screen-table"><thead><tr><th>企業名（すべて架空）</th><th>電話番号</th><th>結果</th></tr></thead><tbody id="listRows"></tbody></table></div><button class="textbtn" id="toggleAllList">残りの候補も表示する</button><p class="micro">企業名は正規化後の完全一致、電話番号は数字の一致で判定。似た名前だけでは自動除外しません。実運用では人の最終確認も行う設計です。</p></div>
+    <label class="checkline confirm"><input type="checkbox" id="confirmList">対象・除外結果を確認しました</label>
+    <div class="actions"><button class="secondary" data-back="1">入力を修正</button><button class="primary" id="toScript" disabled>営業ハックに作成を依頼 →</button></div>
+   </section>
+   <section class="pane" data-step="3" hidden>
+    <div class="panel waiting-panel" id="scriptWaiting"><span class="role-label">営業ハック対応中</span><h3>内容をお預かりしました。</h3><p>ご入力いただいた商材・禁止事項・選択条件をもとに、営業ハックがトークを作成・監修します。この場ですぐに自動生成されたトークが届くことはありません。</p><div class="delivery-date"><span>監修済みスクリプトの送付予定</span><b id="scriptDueDisplay"></b></div><p id="waitingAddress"></p><p class="micro">お客様の追加操作は不要です。不足がある場合はメールで該当項目だけ確認します。予定変更が必要な場合も、理由と新しい予定をご連絡する運用です。</p></div>
+    <div class="panel"><h3>お預かりした架電条件</h3><dl class="summary-list" id="conditionSummary"></dl></div>
+    <div class="panel"><h3>禁止表現・要望の引き継ぎ</h3><div id="handoffNotes"></div></div>
+    <details class="panel ops-panel" id="scriptOps"><summary>運営側の作成・監修・メール送付を体験する（デモ）</summary><div class="role-label">営業ハック側の操作</div><p>実運用では担当者が持ち帰って作成・監修し、メールでお送りします。以下はその作業を体験するための操作です。</p><button class="secondary" id="loadManualSample">作成済みトーク例を用意する（デモ）</button><label>営業ハックが作成した原稿<textarea id="operatorScript" rows="15" placeholder="営業ハック側で作成・監修する原稿をここに入力"></textarea></label><div id="wordStatus" class="note" role="status"></div><label class="checkline"><input id="supervisorCheck" type="checkbox">商材・禁止表現・選択条件・ヒアリング最大3項目・要望を確認した</label><button class="secondary" id="supervisorDone" disabled>監修完了を再現</button><p class="micro" id="supervisorStatus" role="status">作成・監修待ち</p><button class="primary" id="sendScriptMail" disabled>監修済みスクリプトのメール送付を再現 →</button><p class="micro">メールは実際には送信しません。送付した状態だけを再現します。</p></details>
+    <div class="panel mail-card" id="scriptMail" hidden><span class="role-label client-role">メール受信のプレビュー</span><h3>営業ハックからメールが届きました（デモ）</h3><dl class="summary-list" id="mailMetadata"></dl><p>ご依頼内容をもとにトークを作成・監修しました。以下から内容をご確認ください。承認後に担当者の準備と架電開始日を確定します。</p><button class="secondary" id="openReviewedScript">メールから監修済みトークを確認 →</button></div>
+    <div id="reviewedScript" hidden><div class="panel"><div class="panel-heading"><h3>監修済みトークスクリプト v1</h3><span class="tag">営業ハック作成・監修済み</span></div><label>お送りした原稿<textarea id="scriptText" rows="16" readonly></textarea></label><button class="textbtn" data-back="1">商材・禁止事項の入力を修正する</button><p class="micro">事実情報に誤りがあれば入力へ戻ってお知らせください。内容の再提出後は、営業ハックが再作成・監修してメールでご案内します。成果条件・質問項目は選択した範囲です。</p></div><div class="panel"><span class="role-label client-role">お客様の確認</span><label class="checkline"><input type="checkbox" id="customerApproval" disabled>メールで届いたトーク・選択したアポ条件・最大3つのヒアリングを確認しました</label><p class="micro">これは操作デモの確認です。実際の契約やメール送信は発生しません。</p></div></div>
+    <div class="actions"><button class="secondary" data-back="2">リストへ戻る</button><button class="primary" id="approveScript" disabled>内容を確認して架電準備へ →</button></div>
+   </section>
+   <section class="pane" data-step="4" hidden>
+    <div class="panel"><h3>開始前のチェック</h3><ul id="readyChecks" class="ready-list"></ul></div>
+    <div class="panel ops-panel"><span class="role-label">運営側の操作を体験</span><h3>担当者への引き継ぎ</h3><dl class="summary-list" id="operatorBrief"></dl><label class="checkline"><input id="operatorAssigned" type="checkbox">担当者を確保した状態を再現する</label><label class="checkline"><input id="operatorTrained" type="checkbox">担当者が商材・禁止事項・アポ条件を理解した状態を再現する</label><label class="checkline"><input id="slotConfirmed" type="checkbox">架電枠・開始日を確定した状態を再現する</label><p class="micro">スクリプトの承認後、担当者と架電枠を確保して開始日を確定します。お客様が待つ間も、現在の工程と次の連絡予定が分かります。</p></div>
+    <div class="note">顧客の入力だけでは自動で架電を開始しません。運営側の準備が揃うまで待機します。</div>
+    <div class="actions"><button class="secondary" data-back="3">スクリプトへ戻る</button><button class="primary" id="startCalls" disabled>架電開始を再現する →</button></div>
+   </section>
+   <section class="pane" data-step="5" hidden>
+    <div class="success-hero"><div class="success-mark">✓</div><span class="role-label">DEMO / STARTED</span><h2>テスト架電を<br>開始しました。</h2><p>禁止先を除外したリストと承認済みスクリプトを、担当者に引き継ぎました。（デモ）</p></div>
+    <div id="callActivity" class="panel"></div><details class="panel ops-panel"><summary>活動報告・遅延連絡を体験する（デモ）</summary><p>稼働日の終了後に実績を更新し、架電が0回の日も理由をお知らせする運用です。</p><button class="secondary" id="simulateReport">日次の活動報告を再現</button> <button class="secondary" id="simulateDelay">開始後の中断連絡を再現</button></details>
+    <div class="metrics"><div><span>テストの上限</span><b>100<small>回</small></b></div><div><span>初回料金（税別）</span><b>29,800<small>円</small></b></div><div><span>進捗サンプル</span><b id="miniProgress">0<small> / 100回</small></b></div></div>
+    <div class="panel" id="reportEntry"><h3>100回終了後のレポートへ</h3><p>架電履歴から集計した結果と、次の営業の提案を確認します。</p><details class="ops-panel"><summary>100回の実施完了を体験（デモ）</summary><button class="secondary" id="completeCalls">100回完了の活動報告を再現</button></details><button class="primary" id="toReport" disabled>納品レポートを確認 →</button></div><div class="panel"><h3>担当者へ渡す案件説明書</h3><dl id="finalSummary" class="summary-list"></dl><button class="secondary" id="downloadBrief">案件説明書を保存（JSON）</button></div>
+    <div class="panel"><h3>架電後にお届けするもの</h3><p>架電履歴・接続状況・アポ情報・断り理由を整理し、次に試す対象や訴求を判断するためのレポートにまとめます。十分な情報が得られなかった場合も、その範囲を明示します。</p></div><p class="micro">この画面は操作体験の完了です。実際の決済・監修・人員確保・架電は実行していません。</p><button class="secondary" id="restartFlow">入力内容を見直す</button>
+   </section>
+   <section class="pane" data-step="6" hidden>
+    <div class="panel"><span class="role-label">TEST REPORT / 架空の納品例</span><h3>100回の結果と、次の打ち手。</h3><p>実施条件と観測結果を分けてお伝えします。アポ数だけで商材の良し悪しを断定しません。</p><div id="reportMetrics" class="metrics"></div><div id="reportCompare" class="note"></div><dl id="reportInsights" class="summary-list"></dl></div>
+    <div class="panel"><h3>何が起きたか</h3><div id="reportBreakdown"></div><p class="micro">すべて架空の記録です。実際の案件では架電担当の実施ログから集計し、個々の日時・結果を確認できるようにします。</p><button class="secondary" id="downloadCallLog">100回分の架電履歴を保存（CSV）</button></div>
+    <div class="panel"><h3>監修担当からの所見</h3><p id="reportRecommendation"></p><div id="reportNextActions"></div><p>顧客側の商談・受注結果はまだ確認できていません。少数のテスト結果で受注や今後のアポ率は保証できないため、継続する場合も上限を決めて検証します。</p></div>
+    <div class="actions"><button class="secondary" data-back="5">架電状況へ戻る</button><button class="primary" id="toContinuation">継続・見直しの提案を見る →</button></div>
+   </section>
+   <section class="pane" data-step="7" hidden>
+    <div class="panel"><span class="role-label">NEXT STEP / お客様が選びます</span><h3>続けるか、変えるか、ここで判断。</h3><p id="continuationReason"></p><p>継続先・受入枠・正式な費用を確認してからご案内します。今回の操作で継続契約や紹介への情報提供は行いません。</p><div class="route-options"><label><input type="radio" name="nextRoute" value="hack">営業ハックで継続を相談<small>受入枠と正式見積もりを確認します。</small></label><label><input type="radio" name="nextRoute" value="partner">連携先への紹介を相談<small>相手・提供情報・条件を案内し、別途同意いただいてから引き継ぎます。</small></label><label><input type="radio" name="nextRoute" value="revise">対象・訴求の見直しを相談<small>テスト結果を使って条件を再設計します。</small></label><label><input type="radio" name="nextRoute" value="stop">今回は継続しない<small>自動更新・追加請求はありません。</small></label></div></div>
+    <div class="panel"><h3>継続した場合の参考試算</h3><label>月間アポ目標（上限の相談）<input id="continueCount" type="number" min="1" max="9" value="3"></label><div id="continuationEstimate" class="note"></div><p class="micro">初回の観測アポ率をそのまま延長した仮計算です。継続の受注条件・成果定義・単価は個別確認し、初回とは別契約。受注率・売上を保証しません。</p></div>
+    <div class="panel ops-panel"><h3>継続提案の受け皿</h3><p>営業ハック／連携先とも、実際の対応枠と担当は調整中。デモの選択肢は、対応確約を意味しません。</p></div>
+    <div class="actions"><button class="secondary" data-back="6">レポートへ戻る</button><button class="primary" id="chooseRoute" disabled>この希望で次の相談へ（デモ） →</button></div><div class="panel" id="nextDecision" hidden role="status"></div>
+   </section>
+
+  </div>
+ </div>
+</section>
+
+
+<footer class="official-footer"><img src="assets/eigyohack-logo.webp" alt="株式会社営業ハック" width="180" height="41"><p>営業代行ページへの追加掲載を検討するための操作デモです。正式な申し込み・決済は行いません。</p><a href="https://eigyou-hack.com/sales-agency" target="_blank" rel="noopener">参考にした公式の営業支援ページ ↗</a><small>© 株式会社営業ハック</small></footer>
+
+</div>
+
+
+<script src="simulator.js"></script>
+<script src="front.js"></script>
+<script src="diagnosis.js"></script>
+<script src="diagnosis-ui.js"></script>
+<script src="portal.js"></script>
+<script src="journey-model.js"></script>
+
+<dialog class="experience-mail-dialog" id="experienceMailDialog" aria-labelledby="experienceInboxTitle"><div class="inbox-top"><div><span>DEMO INBOX</span><h2 id="experienceInboxTitle">営業ハックからのメール</h2></div><button class="secondary" id="closeExperienceInbox">閉じる</button></div><div class="inbox-layout"><div class="inbox-list" id="experienceMailList"></div><article class="inbox-message" id="experienceMailBody"></article></div><p class="inbox-foot">この受信箱は体験用です。実際のメールアカウントには接続・送信していません。</p></dialog>
+
+<script src="experience.js"></script>
+</body>
+</html>
+

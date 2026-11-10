@@ -14,7 +14,7 @@ const sampleCandidates=[
  {company:'デモフーズ（株）',phone:'０３−００００−０１０２'}
 ];
 sampleCandidates.push(...Array.from({length:100},(_,i)=>({company:`架空店舗${String(i+1).padStart(3,'0')}`,phone:`03-0001-${String(i+1).padStart(4,'0')}`})));
-const workflow={step:0,accepted:false,submitted:false,reviewable:false,simulation:null,completed:false,reported:false,showAll:false,paid:false,data:null,results:[],supervised:false,sent:false,opened:false,approved:false,started:false};
+const workflow={orderType:'initial',prior:null,identityVerified:false,step:0,accepted:false,submitted:false,reviewable:false,simulation:null,completed:false,reported:false,showAll:false,paid:false,data:null,results:[],supervised:false,sent:false,opened:false,approved:false,started:false};
 const escapeHtml=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const normName=s=>String(s).normalize('NFKC').toLowerCase().replace(/株式会社|有限会社|合同会社|一般社団法人|一般財団法人|\(株\)|\(有\)|\(同\)|[\s　・.,，。]/g,'');
 const normPhone=s=>String(s).normalize('NFKC').replace(/\D/g,'');
@@ -45,7 +45,7 @@ function filterCandidates(candidates,bans){
  });
 }
 function orderCalls(){return workflow.simulation?.result.calls||100;}
-function orderPrice(){return SalesSimulator.price(orderCalls()).trial;}
+function orderPrice(){return SalesSimulator.price(orderCalls(),workflow.orderType||'initial').trial;}
 function updateOrderPackage(){document.querySelectorAll('[data-order-calls]').forEach(e=>e.textContent=orderCalls());document.querySelectorAll('[data-order-price]').forEach(e=>e.textContent=yen(orderPrice()));document.querySelectorAll('[data-order-price-number]').forEach(e=>e.textContent=new Intl.NumberFormat('ja-JP').format(orderPrice()));}
 function orderCandidates(){return sampleCandidates.concat(Array.from({length:orderCalls()-100},(_,i)=>({company:`追加架空店舗${i+1}`,phone:`03-0002-${String(i+1).padStart(4,'0')}`})));}
 function chosenHearing(){return [...document.querySelectorAll('#hearingOptions input:checked')].map(x=>x.value);}
@@ -61,7 +61,7 @@ function goStep(step){
  if(step>4&&!workflow.started)return;
  if(step>5&&!workflow.completed)return;
  if(step>6&&!workflow.reported)return;
- updateOrderPackage();workflow.step=step;$('portalError').hidden=true;document.querySelectorAll('.pane').forEach(p=>p.hidden=Number(p.dataset.step)!==step);
+ updateOrderPackage();workflow.step=step;window.updateRepeatDemo?.();$('portalError').hidden=true;document.querySelectorAll('.pane').forEach(p=>p.hidden=Number(p.dataset.step)!==step);
  $('stepList').innerHTML=stepTitles.map((s,i)=>`<li class="${i<step?'complete':i===step?'current':''}" ${i===step?'aria-current="step"':''}><span class="num">${i<step?'✓':i+1}</span>${s}</li>`).join('');
  $('stepKicker').textContent=`STEP ${String(step+1).padStart(2,'0')} / 08`;$('stepTitle').textContent=stepTitles[step];$('stepDesc').textContent=stepDescriptions[step];
  if(step===4)renderReady();if(step===5)renderFinal();if(step===6)renderReport();if(step===7)renderContinuation();renderServiceStatus();
@@ -77,10 +77,10 @@ function openOnboard(){
 }
 $('applyBtn').addEventListener('click',openOnboard);$('launchPortal').addEventListener('click',openOnboard);
 $('backHome').addEventListener('click',e=>{e.preventDefault();document.body.classList.remove('portal-open');$('portal').hidden=true;window.scrollTo({top:0});});
-$('demoPay').addEventListener('click',()=>{if(!workflow.accepted)return;workflow.paid=true;recordEvent('受入確認後の入金確認を再現しました。');$('service').value=$('caseService').value.trim();goStep(1);});
+$('demoPay').addEventListener('click',()=>{if(!workflow.accepted)return;workflow.paid=true;recordEvent('受入確認後の入金確認を再現しました。');$('service').value=$('caseService').value.trim();window.beginPaidIntake?.();goStep(1);});
 document.querySelectorAll('[data-back]').forEach(b=>b.addEventListener('click',()=>goStep(Number(b.dataset.back))));
 function resetFlow(){
- Object.assign(workflow,{step:0,accepted:false,submitted:false,reviewable:false,simulation:null,completed:false,reported:false,showAll:false,paid:false,data:null,results:[],supervised:false,sent:false,opened:false,approved:false,started:false});$('intake').reset();$('banCsv').value='';$('banRows').disabled=false;$('banCsv').disabled=false;$('csvStatus').textContent='';$('confirmList').checked=false;$('toScript').disabled=true;resetApprovals();resetReady();updateHearing();scheduleState.events=[];scheduleState.activity=null;resetPrecheck();goStep(0);
+ Object.assign(workflow,{orderType:'initial',prior:null,identityVerified:false,step:0,accepted:false,submitted:false,reviewable:false,simulation:null,completed:false,reported:false,showAll:false,paid:false,data:null,results:[],supervised:false,sent:false,opened:false,approved:false,started:false});$('intake').reset();$('banCsv').value='';$('banRows').disabled=false;$('banCsv').disabled=false;$('csvStatus').textContent='';$('confirmList').checked=false;$('toScript').disabled=true;resetApprovals();resetReady();updateHearing();scheduleState.events=[];scheduleState.activity=null;resetPrecheck();goStep(0);
 }
 $('resetDemo').addEventListener('click',resetFlow);$('restartFlow').addEventListener('click',()=>goStep(1));
 $('fillSample').addEventListener('click',()=>{
@@ -104,8 +104,8 @@ $('intake').addEventListener('submit',e=>{
  e.preventDefault();$('portalError').hidden=true;
  if(!$('intake').reportValidity())return;
  try{const data=collect();if(!validPhone(data.callback))throw new Error('折り返し電話番号を確認してください（国内10〜11桁）。');if(!$('noBans').checked&&!data.bans.length)throw new Error('禁止先を登録するか「アプローチ禁止先はありません」を選択してください。');if(data.hearing.length>3)throw new Error('追加ヒアリングは最大3つです。');
- workflow.data=data;workflow.results=filterCandidates(orderCandidates(),data.bans);if(!workflow.results.some(r=>!r.excluded))throw new Error('候補がすべて除外されています。禁止先・対象条件を確認してください。');
- workflow.started=false;resetApprovals();resetReady();$('confirmList').checked=false;$('toScript').disabled=true;scheduleState.activity=null;renderList();renderScript();recordEvent('商材・禁止事項・条件を受け付けました。');goStep(2);
+ workflow.data=data;workflow.results=filterCandidates(orderCandidates(),data.bans.concat(window.priorAppointmentBans?.()||[]));if(!workflow.results.some(r=>!r.excluded))throw new Error('候補がすべて除外されています。禁止先・対象条件を確認してください。');
+ window.intakeWasSubmitted?.();workflow.started=false;resetApprovals();resetReady();$('confirmList').checked=false;$('toScript').disabled=true;scheduleState.activity=null;renderList();renderScript();recordEvent('商材・禁止事項・条件を受け付けました。');goStep(2);
  }catch(err){showError(err.message);}
 });
 function renderList(){const excluded=workflow.results.filter(r=>r.excluded).length,total=workflow.results.length;$('toggleAllList').textContent=workflow.showAll?'先頭12行だけ表示する':'残りの候補も表示する';$('listMetrics').innerHTML=`<div><span>候補（架空）</span><b>${total}<small>行</small></b></div><div><span>禁止先・重複の除外</span><b>${excluded}<small>行</small></b></div><div><span>架電対象（サンプル）</span><b>${total-excluded}<small>社</small></b></div>`;
@@ -135,7 +135,7 @@ function renderReady(){const d=workflow.data;const checks=readyConditions();$('r
 ['operatorAssigned','operatorTrained','slotConfirmed'].forEach(k=>$(k).addEventListener('change',renderReady));
 $('startCalls').addEventListener('click',()=>{if(!readyConditions().every(([,ok])=>ok))return;workflow.started=true;recordEvent('担当者の準備が完了し、架電開始を再現。');goStep(5);});
 function renderFinal(){renderActivity();$('finalSummary').innerHTML=summaryHtml([['依頼元',workflow.data.company],['商材',workflow.data.service],...conditionPairs(),['禁止ワード',workflow.data.forbidden.join('、')||'指定なし'],['リスト',`サンプル対象${workflow.results.filter(r=>!r.excluded).length}社。${orderCalls()}回の上限には不通・再架電を含む。`],['承認状況','監修・顧客承認・担当者準備の完了を再現']]);}
-$('downloadBrief').addEventListener('click',()=>{const brief={demo:true,notice:'架空候補による操作デモ。実際の監修・架電・支払は未実施。',plan:{priceExTax:orderPrice(),callAttempts:orderCalls(),includes:['リスト代','準備','禁止先精査']},intake:workflow.data,list:workflow.results,script:$('scriptText').value,simulation:workflow.simulation,plannedDates:{script:scheduleState.script,start:scheduleState.start,report:scheduleState.report},activity:scheduleState.activity,events:scheduleState.events,status:'架電開始を再現'};download('架電案件説明書_デモ.json',JSON.stringify(brief,null,2),'application/json;charset=utf-8');});
+$('downloadBrief').addEventListener('click',()=>{const brief={demo:true,notice:'架空候補による操作デモ。実際の監修・架電・支払は未実施。',plan:{orderType:workflow.orderType||'initial',previousReportId:workflow.prior?.id||null,priceExTax:orderPrice(),callAttempts:orderCalls(),includes:['リスト代','準備','禁止先精査']},intake:workflow.data,list:workflow.results,script:$('scriptText').value,simulation:workflow.simulation,plannedDates:{script:scheduleState.script,start:scheduleState.start,report:scheduleState.report},activity:scheduleState.activity,events:scheduleState.events,status:'架電開始を再現'};download('架電案件説明書_デモ.json',JSON.stringify(brief,null,2),'application/json;charset=utf-8');});
 // Dates are illustrative calendar-day placeholders; the operator confirms the actual schedule.
 const scheduleState={script:'',start:'',report:'',next:'',confirmed:false,reason:'',events:[],activity:null};
 function jstDate(offset=0){const now=new Date(Date.now()+9*60*60*1000);now.setUTCDate(now.getUTCDate()+offset);return now.toISOString().slice(0,10);}
@@ -175,11 +175,11 @@ function renderActivity(){
 }
 $('simulateReport').addEventListener('click',()=>{workflow.completed=false;workflow.reported=false;$('toReport').disabled=true;scheduleState.activity={calls:40,connected:9,appointments:1,updated:timeLabel()+'（デモ）',message:'40回分の活動報告を受領した状態を再現しました。受付での不在が多いため、次回は時間帯を変えて再架電する例です。',rows:[['サンプルキッチン','担当者不在','時間帯を変更して再架電'],['デモベーカリー','商談に同意','日時・連絡先を確認'],['架空ダイニングひなた','現時点で検討なし','終了・理由を記録']]};recordEvent('日次活動報告を受領：40回・担当接続9件・アポ1件（すべて架空）。');renderActivity();renderServiceStatus();});
 $('simulateDelay').addEventListener('click',()=>{workflow.completed=false;workflow.reported=false;$('toReport').disabled=true;const previous=scheduleState.activity; scheduleState.activity={calls:previous?.calls||0,connected:previous?.connected||0,appointments:previous?.appointments||0,updated:timeLabel()+'（デモ）',paused:true,message:'本日は担当者都合で追加架電を実施していません。代替担当の調整状況と新しい再開予定を、次の連絡期限までにご案内します。（架空の中断例）',rows:previous?.rows||[]};scheduleState.reason='担当者の調整により架電を一時中断しています。次の連絡期限までに、再開日とレポート納品予定への影響をご案内します。（デモ）';recordEvent('中断理由と次の連絡予定を通知（デモ）。');renderActivity();renderServiceStatus();});
-function renderOrderReference(){updateOrderPackage();const q=workflow.simulation;if(!q){$('orderReference').textContent='試算に入力エラーがあります。商品ページで条件を確認してください。';return;}const price=SalesSimulator.price(orderCalls());$('orderReference').textContent=`営業応援パック：基本29,800円＋追加${price.extraCalls}回×300円＝${yen(price.trial)}（税別）／税込${yen(price.totalIncTax)}。リスト・精査・監修・架電${orderCalls()}回・報告・次の行動案を含みます。アポ単価の参考換算は${q.result.unit===null?'算出不可':yen(q.result.unit)}。正式な継続見積もりではありません。`;}
+function renderOrderReference(){updateOrderPackage();const q=workflow.simulation;if(!q){$('orderReference').textContent='試算に入力エラーがあります。商品ページで条件を確認してください。';return;}const price=SalesSimulator.price(orderCalls(),workflow.orderType||'initial');if(workflow.orderType==='repeat'){$('orderReference').textContent=`2回目以降の追加依頼（仮料金）：${orderCalls()}回×300円＝${yen(price.trial)}（税別）／税込${yen(price.totalIncTax)}。前回の条件を再利用し、変更点・禁止先を確認します。初回料金は適用しません。`;return;}$('orderReference').textContent=`営業応援パック：基本29,800円＋追加${price.extraCalls}回×300円＝${yen(price.trial)}（税別）／税込${yen(price.totalIncTax)}。リスト・精査・監修・架電${orderCalls()}回・報告・次の行動案を含みます。アポ単価の参考換算は${q.result.unit===null?'算出不可':yen(q.result.unit)}。正式な継続見積もりではありません。`;}
 function resetPrecheck(){workflow.accepted=false;workflow.submitted=false;workflow.reviewable=false;$('precheckForm').reset();$('precheckStatus').hidden=true;$('paymentOffer').hidden=true;$('acceptanceOps').open=false;['acceptProduct','acceptCapacity','acceptSchedule'].forEach(k=>$(k).checked=false);$('acceptCase').disabled=true;$('demoPay').disabled=true;workflow.simulation=window.latestSimulation?structuredClone(window.latestSimulation):null;renderOrderReference();$('caseService').value=$('introService').value;$('caseDate').value=scheduleState.start;$('caseDate').min=jstDate();}
 $('precheckForm').addEventListener('submit',e=>{
  e.preventDefault();if(!$('precheckForm').reportValidity())return;if(!window.latestSimulation){showError('試算条件を確認してからお進みください。');return;}
- workflow.simulation=window.latestSimulation?structuredClone(window.latestSimulation):null;workflow.diagnosis=window.salesDiagnosis?structuredClone(window.salesDiagnosis):null;workflow.submitted=true;workflow.paid=false;workflow.data=null;resetApprovals();workflow.accepted=false;workflow.reviewable=$('caseAudience').value==='business'&&$('caseCondition').value==='standard';$('precheckStatus').hidden=false;$('paymentOffer').hidden=true;$('demoPay').disabled=true;['acceptProduct','acceptCapacity','acceptSchedule'].forEach(k=>$(k).checked=false);$('acceptCase').disabled=true;$('acceptanceOps').hidden=!workflow.reviewable;
+ if(workflow.orderType!=='repeat')workflow.simulation=window.latestSimulation?structuredClone(window.latestSimulation):null;workflow.diagnosis=window.salesDiagnosis?structuredClone(window.salesDiagnosis):null;workflow.submitted=true;workflow.paid=false;workflow.data=null;resetApprovals();workflow.accepted=false;workflow.reviewable=$('caseAudience').value==='business'&&$('caseCondition').value==='standard';$('precheckStatus').hidden=false;$('paymentOffer').hidden=true;$('demoPay').disabled=true;['acceptProduct','acceptCapacity','acceptSchedule'].forEach(k=>$(k).checked=false);$('acceptCase').disabled=true;$('acceptanceOps').hidden=!workflow.reviewable;
  $('precheckTitle').textContent=workflow.reviewable?'受け入れ確認中です':'この条件は個別のご相談が必要です';$('precheckMessage').textContent=workflow.reviewable?'商材・条件・監修と架電の対応枠を営業ハックが確認します。確認完了後に、お支払いと予定日をご案内します。この時点で料金は発生しません。':'個人向けの架電、決裁者・予算の確約は標準テストの範囲外です。営業ハックが対応可否を確認するまで支払いに進めません。標準条件に変更して再度お試しいただけます。';
  recordEvent(workflow.reviewable?'簡易申込を受け付け、対応枠の確認を開始（デモ）。':'標準範囲外のため個別確認へ。決済は未案内（デモ）。');$('precheckStatus').scrollIntoView({behavior:'smooth',block:'start'});
 });
@@ -193,7 +193,7 @@ function reportStats(){const rows=workflow.ledger||[];return {calls:rows.length,
 function renderReport(){renderNextActions();const a=reportStats(),counts={};for(const x of workflow.ledger)counts[x.result]=(counts[x.result]||0)+1;
  $('reportMetrics').innerHTML=`<div><span>実施回数（架空）</span><b>${a.calls}<small>回</small></b></div><div><span>担当者接続</span><b>${a.connected}<small>件</small></b></div><div><span>アポ</span><b>${a.appointments}<small>件</small></b></div>`;
  const before=workflow.simulation?.result;$('reportCompare').textContent=before?`申込時の仮試算：アポ${dec(before.appointments)}件 → 今回の架空の観測例：${a.appointments}件。仮定と実績は別です。実施回数${a.calls}回の中には不通と再架電を含みます。`:'ご依頼分の記録を集計した架空の納品例です。';
- $('reportInsights').innerHTML=summaryHtml([['接続率',dec(a.connected/a.calls*100)+'%'],['全体のアポ率',dec(a.appointments/a.calls*100)+'%'],['アポ当たりの初回費用',a.appointments?yen(orderPrice()/a.appointments):'算出不可（0件）'],['確認できたこと','アポが発生した対象と、接続・断り理由の傾向。'],['まだ分からないこと','顧客側の受注率・受注粗利・継続時に同じ率が出るか。']]);
+ $('reportInsights').innerHTML=summaryHtml([['接続率',dec(a.connected/a.calls*100)+'%'],['全体のアポ率',dec(a.appointments/a.calls*100)+'%'],['アポ当たりのご依頼費用',a.appointments?yen(orderPrice()/a.appointments):'算出不可（0件）'],['確認できたこと','アポが発生した対象と、接続・断り理由の傾向。'],['まだ分からないこと','顧客側の受注率・受注粗利・継続時に同じ率が出るか。']]);
  $('reportBreakdown').innerHTML=Object.entries(counts).map(([k,n])=>`<div class="breakdown-row"><span>${escapeHtml(k)}</span><div><i style="width:${n/a.calls*100}%"></i></div><b>${n}回</b></div>`).join('');
  $('reportRecommendation').textContent=a.appointments>0?'この架空例ではアポが発生しています。商談の反応と採算、提供側の対応枠を確認したうえで、小さな上限から継続を相談する案です。受付での終了・不通もあるため、時間帯と対象の見直しを併せて検討します。':'アポが得られていないため、そのまま継続を勧めず、対象・時間帯・訴求を見直す案です。';
 }

@@ -2,7 +2,7 @@
 const experience={enabled:true,base:jstDate(),day:0,time:'10:00',mails:[],selectedMail:null,known:new Set(),dataRef:null,revision:0,delayed:false};
 function experienceDate(){return CustomerJourney.dateAt(experience.base,experience.day);}
 function experienceStamp(){return `${dateLabel(experienceDate())} ${experience.time}`;}
-function experienceSnapshot(){return {totalCalls:orderCalls(),price:orderPrice(),step:workflow.step,submitted:workflow.submitted,reviewable:workflow.reviewable,accepted:workflow.accepted,sent:workflow.sent,opened:workflow.opened,completed:workflow.completed,calls:scheduleState.activity?.calls||0,paused:!!scheduleState.activity?.paused,route:!$('chooseRoute').disabled?document.querySelector('[name=nextRoute]:checked')?.value:undefined,decided:!$('nextDecision').hidden};}
+function experienceSnapshot(){return {totalCalls:orderCalls(),price:orderPrice(),step:workflow.step,submitted:workflow.submitted,reviewable:workflow.reviewable,accepted:workflow.accepted,supervised:workflow.supervised,sent:workflow.sent,opened:workflow.opened,completed:workflow.completed,calls:scheduleState.activity?.calls||0,paused:!!scheduleState.activity?.paused,route:!$('chooseRoute').disabled?document.querySelector('[name=nextRoute]:checked')?.value:undefined,decided:!$('nextDecision').hidden};}
 function addExperienceMail(key,title,body,type='info'){if(experience.known.has(key))return;experience.known.add(key);experience.mails.unshift({key,title,body,type,date:experienceStamp()});}
 function experienceAdvance(day,time='10:00'){experience.day=Math.max(experience.day,day);experience.time=time;}
 function experienceCheck(id){const el=$(id);if(!el.checked){el.checked=true;el.dispatchEvent(new Event('change',{bubbles:true}));}}
@@ -10,7 +10,7 @@ function syncExperienceMails(){
  if(workflow.data&&workflow.data!==experience.dataRef){experience.dataRef=workflow.data;experience.revision++;}
  if(workflow.submitted)addExperienceMail('receipt','お申し込みを受け付けました',workflow.reviewable?'商材と条件をお預かりしました。営業ハックが対応可否と架電枠を確認し、次のご案内をお送りします。\nこの段階ではお支払いはありません。':'標準テストの範囲では個別確認が必要な条件をお預かりしました。対応可否が分かるまで、お支払いには進みません。');
  if(workflow.accepted)addExperienceMail('accepted','受入可能・お支払いのご案内',`ご依頼の商材と対応枠を確認しました。\n営業応援パック：${yen(orderPrice())}（税別）／架電${orderCalls()}回込み\n開始予定：${dateLabel(scheduleState.start)}\n入金確認後に、詳細情報の入力と準備を開始します。\n予定日はトーク確認・担当者準備を経て確定します。`,'payment');
- if(workflow.paid)addExperienceMail('paid','お支払いを確認しました',`営業応援パックの支払いを確認した場面を再現しています。実決済はありません。\n次は、商材・禁止先・禁止ワード・追加ヒアリングを入力してください。入金確認後7日以内が入力期限の案です。\n入力内容をもとに営業ハックがトークを作成・監修します。`);
+ if(workflow.paid)addExperienceMail('paid','お支払いを確認しました',`営業応援パックの支払いを確認した場面を再現しています。実決済はありません。\n次は、商材・禁止先・禁止ワード・追加ヒアリングを入力してください。提出目安は入金確認から7日、有効期限は30日目23:59（日本時間）です。${window.packPaymentDates?.()||'具体的な日付は専用フォームでご確認ください。'}お客様都合のキャンセル・情報未提出による失効は原則返金なし（当社都合等の例外あり）の案です。\n入力内容をもとに営業ハックがトークを作成・監修します。`);
  if(workflow.data)addExperienceMail('intake-'+experience.revision,'架電準備の情報を受け付けました',`商材と要望をお預かりしました。\n禁止先の精査後、トークを作成・監修します。\nトーク送付予定：${dateLabel(scheduleState.script)}\n今はお客様に追加の作業はありません。不足がある場合のみメールで確認します。`);
  if(workflow.sent)addExperienceMail('script-'+experience.revision,'監修済みトークのご確認をお願いします',`営業ハックでトークを作成・監修しました。\nご入力いただいた商材・禁止事項・選択条件をご確認ください。\n事実情報に誤りがある場合は修正をご相談いただけます。\n内容確認後に、担当者の準備と開始日の確定へ進みます。`,'script');
  if(workflow.approved)addExperienceMail('approved-'+experience.revision,'トークの確認ありがとうございます',`確認済みのトークと禁止先の情報を担当者へ引き継ぎます。\n開始予定：${dateLabel(scheduleState.start)}\n次は準備完了と架電開始をご案内します。`);
@@ -23,7 +23,7 @@ function syncExperienceMails(){
 }
 function updateCustomerExperience(){
  const visible=document.body.classList.contains('portal-open');$('customerExperience').hidden=!visible;if(!visible)return;
- syncExperienceMails();const state=experienceSnapshot(),p=CustomerJourney.plan(state);$('experienceClock').textContent=`${experience.day===0?'申込当日':experience.day+'日目'} · ${experienceStamp()}（仮想日付）`;$('experienceTitle').textContent=p.title;$('experienceText').textContent=p.text;$('experienceNext').textContent=p.label;$('experienceNext').disabled=!!p.disabled;$('experienceNext').dataset.action=p.action;$('experienceMailCount').textContent=experience.mails.length;$('experienceDelay').hidden=!(workflow.step===5&&scheduleState.activity?.calls>0&&!workflow.completed&&!experience.delayed);document.body.classList.toggle('customer-experience',experience.enabled);$('toggleExperienceDetails').setAttribute('aria-pressed',String(!experience.enabled));$('toggleExperienceDetails').textContent=experience.enabled?'運営の確認手順も見る':'お客様目線に戻す';window.updateRepeatDemo?.();
+ syncExperienceMails();if(workflow.step===3&&$('draftStage'))$('draftStage').textContent=workflow.sent?'下書き作成済 → 営業ハック監修済 → メール送付済 → お客様確認待ち':workflow.supervised?'下書き作成済 → 営業ハック監修済 → メール送付待ち':'フォーム反映・下書き作成済 → 営業ハック監修待ち → メール送付待ち';const state=experienceSnapshot(),p=CustomerJourney.plan(state);$('experienceClock').textContent=`${experience.day===0?'申込当日':experience.day+'日目'} · ${experienceStamp()}（仮想日付）`;$('experienceTitle').textContent=p.title;$('experienceText').textContent=p.text;$('experienceNext').textContent=p.label;$('experienceNext').disabled=!!p.disabled;$('experienceNext').dataset.action=p.action;$('experienceMailCount').textContent=experience.mails.length;$('experienceDelay').hidden=!(workflow.step===5&&scheduleState.activity?.calls>0&&!workflow.completed&&!experience.delayed);document.body.classList.toggle('customer-experience',experience.enabled);$('toggleExperienceDetails').setAttribute('aria-pressed',String(!experience.enabled));$('toggleExperienceDetails').textContent=experience.enabled?'運営の確認手順も見る':'お客様目線に戻す';window.updateRepeatDemo?.();
 }
 function enterCustomerExperience(){document.body.classList.toggle('customer-experience',experience.enabled);updateCustomerExperience();}
 window.updateCustomerExperience=updateCustomerExperience;window.enterCustomerExperience=enterCustomerExperience;
@@ -40,7 +40,8 @@ $('experienceNext').addEventListener('click',()=>{
   case 'pay':$('demoPay').click();break;
   case 'intake':if(!workflow.prior)$('fillSample').click();$('intake').requestSubmit();break;
   case 'list':experienceCheck('confirmList');$('toScript').click();break;
-  case 'script':experienceAdvance(CustomerJourney.dayOffset(experience.base,scheduleState.script));$('loadManualSample').click();experienceCheck('supervisorCheck');$('supervisorDone').click();$('sendScriptMail').click();if(!workflow.sent)showError('トークに確認・修正が必要です。'+$('wordStatus').textContent);break;
+  case 'reviewDraft':experienceCheck('supervisorCheck');$('supervisorDone').click();if(!workflow.supervised)showError('監修前に修正が必要です。'+$('wordStatus').textContent);break;
+  case 'script':experienceAdvance(CustomerJourney.dayOffset(experience.base,scheduleState.script));$('sendScriptMail').click();if(!workflow.sent)showError('トークに確認・修正が必要です。'+$('wordStatus').textContent);break;
   case 'openScript':$('openReviewedScript').click();break;
   case 'approve':experienceCheck('customerApproval');$('approveScript').click();break;
   case 'start':experienceAdvance(CustomerJourney.dayOffset(experience.base,scheduleState.start));['operatorAssigned','operatorTrained','slotConfirmed'].forEach(experienceCheck);scheduleState.next=experienceDate();$('startCalls').click();break;

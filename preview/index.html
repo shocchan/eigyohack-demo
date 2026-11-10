@@ -177,12 +177,12 @@ footer{text-align:center;font-size:12px;color:#8a909b;padding:26px 20px}
 #gate input{width:100%;font-size:15px;padding:11px 12px;border:1px solid var(--line);border-radius:6px;margin-bottom:12px;font-family:inherit}
 #gate button{width:100%;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:11px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
 #gate .err{font-size:12px;color:var(--accent-dark);min-height:16px;margin-top:8px}
-#siteContent{display:block}
+#siteContent{display:none}
 </style>
 <link rel="stylesheet" href="brand.css">
 <link rel="stylesheet" href="experience.css">
 </head>
-<body><div style="background:#fff2d9;color:#624718;text-align:center;padding:10px;font-size:13px">操作デモです。実際の申し込み・決済・メール送信・架電は行いません。個人情報は入力せず、サンプルでお試しください。</div>
+<body><div id="gate"><form class="box" id="demoGateForm"><h2>デモ閲覧用パスワード</h2><label for="gatePw">共有されたパスワードを入力してください</label><input type="password" id="gatePw" autocomplete="off" required autofocus><button type="submit">デモを表示する</button><p class="err" id="gateErr" role="alert"></p><p style="font-size:12px;color:#697789">企画検討用の操作デモです。</p></form></div><div style="background:#fff2d9;color:#624718;text-align:center;padding:10px;font-size:13px">操作デモです。実際の申し込み・決済・メール送信・架電は行いません。個人情報は入力せず、サンプルでお試しください。</div>
 
 <div id="siteContent">
 
@@ -308,6 +308,11 @@ footer{text-align:center;font-size:12px;color:#8a909b;padding:26px 20px}
 </div>
 
 
+<script>
+'use strict';
+const gateForm=document.getElementById('demoGateForm');
+gateForm.addEventListener('submit',e=>{e.preventDefault();if(document.getElementById('gatePw').value==='test'){document.getElementById('gate').style.display='none';document.getElementById('siteContent').style.display='block';document.getElementById('gatePw').value='';document.querySelector('#siteContent a').focus();}else{document.getElementById('gateErr').textContent='パスワードが違います。';document.getElementById('gatePw').focus();}});
+</script>
 <script src="simulator.js"></script>
 <script src="front.js"></script>
 <script src="diagnosis.js"></script>

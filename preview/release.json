@@ -1,13 +1,13 @@
 {
-  "version": "consumer-list-v5",
-  "source_commit": "9a8d61a1f0079029b03e95f332f5e5b712f1b94a",
+  "version": "consumer-list-v5.1",
+  "source_commit": "733b49395d7933203acc50cf9446115c9bcbc8d7",
   "updated": "2026-11-11",
   "demo": true,
   "features": [
     "optional-consumer-list-question",
     "supplied-list-call-consultation",
     "no-new-consumer-list",
-    "other-methods-free-consultation",
+    "no-list-other-methods-consultation",
     "contract-consent-preview"
   ]
 }

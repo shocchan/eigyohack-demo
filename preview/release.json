@@ -1,13 +1,1 @@
-{
-  "version": "consumer-list-v5.1",
-  "source_commit": "733b49395d7933203acc50cf9446115c9bcbc8d7",
-  "updated": "2026-11-11",
-  "demo": true,
-  "features": [
-    "optional-consumer-list-question",
-    "supplied-list-call-consultation",
-    "no-new-consumer-list",
-    "no-list-other-methods-consultation",
-    "contract-consent-preview"
-  ]
-}
+{"version":"pack-hero-v6","updated":"2026-11-11","demo":true,"features":["solo-owner-pro-team","verified-award-photo","ten-or-fewer-b2b-eligibility","form-efficiency-price-story","consumer-consult-routes-preserved"]}

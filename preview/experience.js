@@ -19,7 +19,7 @@ function syncExperienceMails(){
  if(scheduleState.activity?.paused)addExperienceMail('paused-'+experience.revision,'進行変更と次のご連絡について',`担当者の調整が必要となり、追加の架電を一時中断しています。\n現在の実施回数：${scheduleState.activity.calls}回\nレポート予定を${dateLabel(scheduleState.report)}に変更する例です。\n次の連絡期限までに再開状況をご案内します。`,'activity');
  if(workflow.completed)addExperienceMail('completed-'+experience.revision,`ご依頼の${orderCalls()}回が完了しました`,`${orderCalls()}回分の実施記録が揃いました。\n担当者接続${reportStats().connected}件／アポ${reportStats().appointments}件という架空の例です。\nレポート納品予定：${dateLabel(scheduleState.report)}\n結果と次の打ち手を整理してお送りします。`,'activity');
  if(workflow.reported)addExperienceMail('report-'+experience.revision,'結果レポートと次の施策をお届けします',`${orderCalls()}回分の結果レポートをお届けした場面です。\n件数だけでなく、相手の反応と次の行動案もまとめています。\nアポの先は商談準備へ。不在の先は時間帯を再検討。見送りの先は対象条件や伝え方を見直します。`,'report');
- if(workflow.step===7)addExperienceMail('proposal-'+experience.revision,'次の営業の進め方をご相談ください',`営業ハックでの継続、営業ハックの別サービス、対象や訴求の見直し、今回は終了、からご希望を伺います。\n自動更新はありません。正式な条件・費用・対応枠は、次の相談で確認します。`,'proposal');
+ if(workflow.step===7)addExperienceMail('proposal-'+experience.revision,'次の営業の進め方をご相談ください',`成果報酬型での継続相談、営業ハックの別サービス、対象や訴求の見直し、今回は終了、からご希望を伺います。\n自動更新はありません。正式な条件・費用・対応枠は、次の相談で確認します。`,'proposal');
 }
 function updateCustomerExperience(){
  const visible=document.body.classList.contains('portal-open');$('customerExperience').hidden=!visible;if(!visible)return;

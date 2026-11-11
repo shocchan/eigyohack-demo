@@ -1,1 +1,1 @@
-{"version":"pack-services-v10","updated":"2026-11-11","demo":true,"change":"internal-services-consultation-not-external-referral","sample_talk":"user-provided-v9"}
+{"version":"pack-choice-v11","updated":"2026-11-11","demo":true,"changes":["internal-service-consultation","check-only-radio","outcome-quote-then-separate-contract","sample-talk-v9"]}

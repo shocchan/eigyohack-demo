@@ -1,24 +1,11 @@
 (function(root){
- function recommend(a){
-  const valid={audience:['business','shops','consumer'],relationship:['cold','warm','existing'],explanation:['verbal','material','demo'],challenge:['awareness','meetings','followup']};
-  for(const [k,values]of Object.entries(valid))if(!values.includes(a[k]))throw new Error('診断の回答が揃っていません。');
-  const methods=[
-   {id:'phone',name:'テレアポ',score:a.audience==='consumer'?0:4,reason:'担当者と直接話し、課題や関心の有無を確かめる入口に。'},
-   {id:'form',name:'フォーム営業',score:a.audience==='consumer'?0:2,reason:'企業向けに要点をまとめた案内を届け、接点をつくる候補。'},
-   {id:'mail',name:'メールでの案内・フォロー',score:1,reason:'送付先と案内方法を確認できる既存の接点に、資料や次の案内を届ける候補。'},
-   {id:'demo',name:'説明会・個別デモ',score:1,reason:'見せたり体験してもらうことで、価値を理解してもらう候補。'},
-   {id:'content',name:'発信・紹介からの接点づくり',score:1,reason:'関心を持った人が自分で情報を確認し、相談できる入口を整える候補。'}
-  ];const by=id=>methods.find(m=>m.id===id);
-  if(a.explanation==='verbal')by('phone').score+=2;
-  if(a.explanation==='material'){by('form').score+=2;by('mail').score+=2;}
-  if(a.explanation==='demo')by('demo').score+=4;
-  if(a.relationship==='cold'){by('form').score+=1;by('content').score+=1;}
-  else{by('mail').score+=3;by('phone').score+=1;}
-  if(a.challenge==='meetings')by('phone').score+=2;
-  if(a.challenge==='followup'){by('mail').score+=2;by('demo').score+=1;}
-  if(a.audience==='shops')by('phone').reason='お店の担当者に直接話し、時間帯や課題感を確かめる入口に。';
-  if(a.audience==='consumer'){by('content').score+=5;by('demo').score+=1;}
-  return {input:{...a},methods:methods.filter(m=>m.score>0&&(a.audience!=='consumer'||!['phone','form'].includes(m.id))).sort((a,b)=>b.score-a.score).slice(0,3).map(({score,...m})=>m),phoneScope:a.audience!=='consumer',preset:a.relationship==='cold'?'cold':'warm'};
- }
- root.SalesDiagnosis={recommend};if(typeof module!=='undefined')module.exports=root.SalesDiagnosis;
+function recommend(a){const valid={audience:['business','shops','consumer'],relationship:['cold','warm','existing'],explanation:['verbal','material','demo'],challenge:['awareness','meetings','followup','organization','field','leads']};for(const[k,v]of Object.entries(valid))if(!v.includes(a[k]))throw Error('診断の回答が揃っていません。');if(a.domain&&!['technology','risk','business','other','unsure'].includes(a.domain))throw Error('分野を選択してください。');
+const ms=[{id:'phone',name:'テレアポ',score:a.audience==='consumer'?0:4,reason:'担当者と直接話し、課題や関心の有無を確かめる入口に。'},{id:'form',name:'フォーム等での接点づくり',score:a.audience==='consumer'?0:2,reason:'企業向けに要点をまとめた案内を届ける方法を比較。送付可否や対象の確認が必要です。'},{id:'mail',name:'既存接点へのメール・フォロー',score:1,reason:'案内できる既存の接点に、資料や次の連絡を届ける候補。'},{id:'demo',name:'説明会・個別デモ',score:1,reason:'実物・画面・体験で価値を伝える方法を検討。'},{id:'content',name:'発信・紹介からの接点づくり',score:1,reason:'関心を持った方が自分で情報を確認し、相談できる入口を整える。'},{id:'organization',name:'営業の仕組み・育成の見直し',score:0,reason:'対象・商談・追客・育成を見直し、社内で改善を続ける仕組みを検討。'},{id:'field',name:'訪問・商談対応の支援',score:0,reason:'訪問や実演、商談を担う人員・対応エリアを相談。'},{id:'leads',name:'継続的なリード・アポ獲得',score:0,reason:'必要件数・単価・対象に合う継続支援を相談。'}],by=id=>ms.find(m=>m.id===id);
+if(a.explanation==='verbal')by('phone').score+=2;if(a.explanation==='material'){by('form').score+=2;by('mail').score+=2;}if(a.explanation==='demo')by('demo').score+=4;if(a.relationship==='cold'){by('form').score++;by('content').score++;}else{by('mail').score+=3;by('phone').score++;}if(a.challenge==='meetings')by('phone').score+=2;if(a.challenge==='followup'){by('mail').score+=2;by('demo').score++;}if(['organization','field','leads'].includes(a.challenge))by(a.challenge).score+=12;if(a.audience==='consumer'){by('content').score+=5;by('demo').score++;}
+const methods=ms.filter(m=>m.score>0&&(a.audience!=='consumer'||!['phone','form'].includes(m.id))).sort((x,y)=>y.score-x.score).slice(0,3).map(({score,...m})=>m),consultFirst=a.audience==='consumer'||methods[0].id!=='phone',services=[];
+if(a.challenge==='organization')services.push('コンサル・研修');else if(a.challenge==='field')services.push('訪問営業代行','営業パーソン派遣');else if(a.challenge==='leads')services.push('アポ100','リード獲得事業');else if(a.relationship!=='cold')services.push('掘り起こし営業代行');else services.push('営業手法・対象の設計相談');
+const specialty={technology:'IT・DX・テクノロジーソリューション分野特化営業代行',risk:'リスクマネジメント分野特化営業代行',business:'経営戦略・人材リソース・マーケティング分野特化営業代行'}[a.domain];if(specialty)services.push(specialty);
+return {input:{...a},methods,phoneScope:a.audience!=='consumer',preset:a.relationship==='cold'?'cold':'warm',route:consultFirst?'consult':'pack',services,reason:consultFirst?'回答からは、電話以外の伝え方や、継続支援・組織改善も比較する価値がありそうです。':'担当者と話して反応を確かめる方法が候補です。小さな電話営業のテストから検討できます。'};
+}
+root.SalesDiagnosis={recommend};if(typeof module!=='undefined')module.exports=root.SalesDiagnosis;
 })(typeof window!=='undefined'?window:globalThis);

@@ -9,7 +9,7 @@
   if(s.step===5){if(s.completed)return {action:'report',label:'納品予定日のレポートを受け取る',title:`${total}回の架電が完了。結果を整理しています`,text:'件数・相手の反応・次の施策をまとめ、納品予定日にレポートをお届けする場面です。'};if(s.calls===0)return {action:'daily',label:'初日の途中報告を受け取る',title:'テスト架電が始まりました',text:'日付を進めて、その日にどれだけ電話し、どんな反応があったかの報告を受け取ります。'};return {action:'complete',label:s.paused?'再開後の完了報告を見る':'数日後の完了報告を受け取る',title:s.paused?'中断理由と、次の連絡予定をご案内しています':'途中経過が分かったら、完了まで進めましょう',text:`残りの架電を行い、${total}回分の実施記録が揃った状態へ進めます。`};}
   if(s.step===6)return {action:'next',label:'次の営業提案を見る',title:'結果を見て、次に何をするかを考えます',text:'アポが取れた先・不在の先・見送りの先ごとに、次の行動を整理してお渡しします。'};
   if(s.decided)return {action:'restart',label:'もう一度はじめから体験',title:'申し込みから次の相談まで、体験できました',text:'実際の契約や追加請求は発生していません。続けるかどうかは、お客様が選ぶ設計です。'};
-  return {action:'choose',label:s.route?'この希望で相談へ進む':'下で続け方を選んでください',disabled:!s.route,title:'継続・見直し・紹介・終了から選びます',text:'自動更新はしません。別手法を含む提案や費用は、次の相談で確認します。'};
+  return {action:'choose',label:s.route?'この希望で相談へ進む':'下で続け方を選んでください',disabled:!s.route,title:'継続・別サービス・見直し・終了から選びます',text:'自動更新はしません。別手法を含む提案や費用は、次の相談で確認します。'};
  }
  function dayOffset(base,date){const n=Math.round((new Date(date+'T00:00:00Z')-new Date(base+'T00:00:00Z'))/86400000);if(!Number.isFinite(n))throw new Error('仮想日付が不正です。');return Math.max(0,n);}
  function dateAt(base,day){if(!Number.isInteger(day)||day<0)throw new Error('経過日数が不正です。');const d=new Date(base+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+day);return d.toISOString().slice(0,10);}

@@ -1,0 +1,11 @@
+{
+  "version": "sales-entry-v4",
+  "source_commit": "2b4660d694a9fd2a89bddc131cc87e97595f6237",
+  "updated": "2026-11-11",
+  "demo": true,
+  "features": [
+    "optional-diagnosis",
+    "free-consultation-routing",
+    "contract-consent-preview"
+  ]
+}

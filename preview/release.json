@@ -1,1 +1,1 @@
-{"version":"pack-choice-v11","updated":"2026-11-11","demo":true,"changes":["internal-service-consultation","check-only-radio","outcome-quote-then-separate-contract","sample-talk-v9"]}
+{"version":"pack-outcome-v12","updated":"2026-11-12","demo":true,"features":["prefilled-intake","changed-terms-requote","unit-and-appointment-cap","separate-contract","stripe-prepayment-simulation","supervision-and-restart","confirmed-only-settlement","refund-unused-balance"]}

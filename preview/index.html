@@ -224,7 +224,7 @@ footer{text-align:center;font-size:12px;color:#8a909b;padding:26px 20px}
     <div class="panel" id="paymentOffer" hidden><span class="role-label client-role">受入可能のご案内 / デモ</span><h3>準備から報告まで、営業応援パックで。</h3><div class="order"><span>リスト・準備・精査・監修・架電・レポート</span><b><span data-order-price></span> <small>税別</small></b></div><p>不通・再架電を含む<span data-order-calls></span>回。アポが取れても、このテスト内で成果による追加料金はありません。</p><p id="acceptedSchedule" class="note"></p><div class="payment-policy"><b>お支払い前にご確認ください（販売条件の企画案）</b><ul><li>必要情報・禁止先は入金確認から7日以内を目安に提出してください。</li><li>利用開始に必要な情報を提出できる有効期限は、入金確認日を0日目として30日目23:59（日本時間）までです。具体的な期限日は決済後に表示します。</li><li>7日の提出目安を過ぎた場合は対応枠を保留。30日以内なら提出後に日程を再調整します。情報未提出・連絡不通のまま有効期限を過ぎると、この依頼での受付を終了します。</li><li>入金後のお客様都合のキャンセル、情報未提出・連絡不通による失効は、原則返金なしとする案です。当社都合の未提供・重複決済・法令上必要な返金は除きます。</li><li>期限内に必要情報を提出済みなら、当社の作成・監修・架電待ちを理由に失効させません。メール確認は送付後7日以内を目安にお願いし、未確認のまま架電しません。</li></ul><label class="checkline"><input type="checkbox" id="paymentPolicyConsent">7日の提出目安・30日の有効期限・原則返金なしと例外を確認した状態を体験する</label><div class="contract-consent"><h4>事業者としての発注・契約内容を確認</h4><p><button type="button" class="textbtn" id="openPackTerms">利用規約・発注条件・データの扱いを読む（案）</button></p><label class="checkline"><input type="checkbox" id="contractAuthority">事業目的の依頼で、会社・事業者を代表して発注する権限があることを確認する（デモ）</label><label class="checkline"><input type="checkbox" id="contractTerms">利用規約と今回の発注条件・データの取扱条件を確認する（デモ）</label><button type="button" class="secondary" id="verifyContractEmail">連絡先メールの本人確認を体験</button><p id="contractEmailStatus" class="micro" aria-live="polite">実際のメール認証は未接続です。</p><p class="micro">規約の版・発注条件・確認日時と支払情報を案件に紐づけ、控えを残す設計です。本番ではログインとサーバー側の記録が必要です。</p></div><p class="micro">実際の契約・決済・失効・返金処理は行わないデモです。条項の有効性と正式な販売条件は、本番公開前に確認します。</p></div><button class="primary" id="demoPay" disabled>案内された料金の支払いを再現 →</button><p class="micro">実決済・契約締結は行いません。入金確認後にリスト作成等の有償準備を開始する設計です。</p></div>
    </section>
    <section class="pane" data-step="1" hidden><div class="panel" id="contractReceipt" hidden><h3>契約・発注条件の控え（デモ）</h3><p id="contractReceiptText"></p><button type="button" class="secondary" id="downloadContractReceipt">同意記録と発注条件の控えを保存</button><p class="micro">実際の契約成立・本人認証を証明するものではありません。本番ではサーバーで保存し、顧客専用画面から取得できるようにします。</p></div><div id="intakeDeadline" class="panel deadline-panel"></div><div id="repeatCarry" class="panel" hidden></div>
-    <div class="samplebar"><div><b>まずは入力例で体験</b><p>架空の採用支援サービスで、最後まで試せます。入力内容は再読み込みすると消えます。</p></div><button class="secondary" id="fillSample">サンプルを入力</button></div>
+    <div class="samplebar"><div><b>まずは入力例で体験</b><p>いただいたトーク文面を使った、架空の採用支援サービスの入力例です。採用単価を下げた事例などの実績表現も架空で、実運用では使用許可と根拠の確認が必要です。入力内容は再読み込みで消えます。</p></div><button class="secondary" id="fillSample">サンプルを入力</button></div>
     <form id="intake" novalidate>
      <div class="panel"><div class="section-number">01 / 基本情報・商材</div><h3>何を、誰に届けますか？</h3><div class="fields">
       <label>会社名・屋号 <span class="required">必須</span><input id="company" required maxlength="80" placeholder="例：サンプル採用サポート"></label>
@@ -333,8 +333,8 @@ gateForm.addEventListener('submit',e=>{e.preventDefault();if(document.getElement
 <script src="front.js?v=pack1"></script>
 <script src="diagnosis.js?v=consumer7"></script>
 <script src="diagnosis-ui.js?v=consumer7"></script>
-<script src="pack-model.js?v=postpay6"></script>
-<script src="portal.js?v=list-v8-final"></script>
+<script src="pack-model.js?v=talk-v9"></script>
+<script src="portal.js?v=talk-v9"></script>
 <script src="journey-model.js?v=postpay6"></script>
 
 <dialog class="experience-mail-dialog" id="experienceMailDialog" aria-labelledby="experienceInboxTitle"><div class="inbox-top"><div><span>DEMO INBOX</span><h2 id="experienceInboxTitle">営業ハックからのメール</h2></div><button class="secondary" id="closeExperienceInbox">閉じる</button></div><div class="inbox-layout"><div class="inbox-list" id="experienceMailList"></div><article class="inbox-message" id="experienceMailBody"></article></div><p class="inbox-foot">この受信箱は体験用です。実際のメールアカウントには接続・送信していません。</p></dialog>

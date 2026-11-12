@@ -9,6 +9,6 @@ $('precheckForm').addEventListener('reset',()=>queueMicrotask(renderEligibility)
 
 const offerDeadline='2026-12-31T23:59:59+09:00';
 function initialOfferOpen(){return workflow.orderType==='repeat'||Date.now()<=new Date(offerDeadline).getTime();}
-$('precheckForm').addEventListener('submit',e=>{if(!initialOfferOpen()){e.preventDefault();e.stopImmediatePropagation();workflow.accepted=false;$('paymentOffer').hidden=true;showError('年内申込限定の初回特別プランは受付を終了しました。無料相談から今後のご依頼をご相談ください。');}},true);
+$('precheckForm').addEventListener('submit',e=>{if(!initialOfferOpen()){e.preventDefault();e.stopImmediatePropagation();workflow.accepted=false;$('paymentOffer').hidden=true;showError('年内の新規受付は受付を終了しました。無料相談から今後のご依頼をご相談ください。');}},true);
 // 実際の枠数・受付終了・期限内受付の判定は、本番でサーバー側管理が必要。
 const priorOfferUpdate=window.updateRepeatDemo;window.updateRepeatDemo=function(){priorOfferUpdate?.();$('limitedOrderNote').hidden=workflow.orderType==='repeat';};

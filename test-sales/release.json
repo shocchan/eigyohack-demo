@@ -1,5 +1,5 @@
 {
-  "version": "pack-founder-v19",
+  "version": "pack-member-v20",
   "updated": "2026-11-13",
   "demo": true,
   "before": "../test-sales-before/",
@@ -16,6 +16,11 @@
     "illustrated-before-after-payment-flow",
     "founder-focused-hero",
     "one-month-test-sales-scope",
-    "support-duration-separate-from-intake-expiry"
+    "support-duration-separate-from-intake-expiry",
+    "account-after-payment-demo",
+    "customer-portal",
+    "admin-read-status-reminders",
+    "fixed-and-outcome-continuation",
+    "same-conditions-repeat-29800"
   ]
 }

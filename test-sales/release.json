@@ -1,5 +1,5 @@
 {
-  "version": "pack-test-sales-v14.1",
+  "version": "pack-test-sales-v15",
   "updated": "2026-11-12",
   "demo": true,
   "before": "../test-sales-before/",
@@ -8,6 +8,9 @@
     "five-field-lead-form",
     "explicit-initial-repeat-pricing",
     "optional-diagnosis-simulation",
-    "postpay-benefit-hooks"
+    "postpay-benefit-hooks",
+    "original-navy-coral-design",
+    "raised-selection-cards",
+    "responsive-release-layout"
   ]
 }

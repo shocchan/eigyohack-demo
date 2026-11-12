@@ -1,6 +1,6 @@
 {
-  "version": "pack-test-sales-v16",
-  "updated": "2026-11-12",
+  "version": "pack-founder-v19",
+  "updated": "2026-11-13",
   "demo": true,
   "before": "../test-sales-before/",
   "changes": [
@@ -13,6 +13,9 @@
     "raised-selection-cards",
     "responsive-release-layout",
     "deliverables-preview-instead-of-zero-appointment-framing",
-    "illustrated-before-after-payment-flow"
+    "illustrated-before-after-payment-flow",
+    "founder-focused-hero",
+    "one-month-test-sales-scope",
+    "support-duration-separate-from-intake-expiry"
   ]
 }

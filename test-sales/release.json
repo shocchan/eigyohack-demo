@@ -1,0 +1,13 @@
+{
+  "version": "pack-test-sales-v14",
+  "updated": "2026-11-12",
+  "demo": true,
+  "before": "../preview/?v=63a5eeb",
+  "changes": [
+    "test-sales-positioning",
+    "five-field-lead-form",
+    "explicit-initial-repeat-pricing",
+    "optional-diagnosis-simulation",
+    "postpay-benefit-hooks"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "version": "pack-volume-v13",
+  "updated": "2026-11-12",
+  "demo": true,
+  "changes": [
+    "progressive-volume-pricing",
+    "price-cards-and-checkout-synced",
+    "repeat-volume-discount"
+  ]
+}

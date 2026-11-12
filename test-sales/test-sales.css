@@ -2,3 +2,4 @@
 /* Keep the first action visible and avoid awkward mobile line breaks. */
 .demo-top{display:none}
 @media(max-width:750px){.test-hero h1{font-size:24px;line-height:1.7}.test-hero-copy>p:not(.test-hero-lead):not(.test-eyebrow){font-size:14px}.test-question{padding:14px}.test-question b{font-size:18px}.official-header .official-nav{display:grid;grid-template-columns:1fr 1fr;overflow:visible;padding:0}.official-header .official-nav>a{white-space:normal;min-height:43px;padding:10px 12px}.official-header .official-nav>a.official-contact{margin-left:0}}
+@media(max-width:750px){.official-header .official-nav>a:first-child,.official-header .official-nav>a.official-contact{display:flex!important}}

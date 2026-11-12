@@ -1,8 +1,8 @@
 {
-  "version": "pack-test-sales-v14",
+  "version": "pack-test-sales-v14.1",
   "updated": "2026-11-12",
   "demo": true,
-  "before": "../preview/?v=63a5eeb",
+  "before": "../test-sales-before/",
   "changes": [
     "test-sales-positioning",
     "five-field-lead-form",

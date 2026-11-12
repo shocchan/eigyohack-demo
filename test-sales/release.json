@@ -1,5 +1,5 @@
 {
-  "version": "pack-test-sales-v15",
+  "version": "pack-test-sales-v16",
   "updated": "2026-11-12",
   "demo": true,
   "before": "../test-sales-before/",
@@ -11,6 +11,8 @@
     "postpay-benefit-hooks",
     "original-navy-coral-design",
     "raised-selection-cards",
-    "responsive-release-layout"
+    "responsive-release-layout",
+    "deliverables-preview-instead-of-zero-appointment-framing",
+    "illustrated-before-after-payment-flow"
   ]
 }
